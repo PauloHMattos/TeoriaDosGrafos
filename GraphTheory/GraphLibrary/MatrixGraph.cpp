@@ -19,6 +19,21 @@ void MatrixGraph::AddEdge(int node1, int node2)
 	m_Matrix[node2 - 1][node1 - 1] = 1;
 }
 
+forward_list<int> MatrixGraph::GetNeighbors(int nodeIndex)
+{
+	forward_list<int> neighbors;
+	
+	for (int i = 0; i < m_NodesCount; i++)
+	{
+		if (m_Matrix[nodeIndex][i])
+		{
+			neighbors.push_front(i);
+		}
+	}
+
+	return neighbors;
+}
+
 void MatrixGraph::Resize(unsigned int count)
 {
 	m_NodesCount = count;

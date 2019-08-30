@@ -1,7 +1,8 @@
 #pragma once
 
 #include <string>
-#include <list>
+#include <forward_list>
+#include <vector>
 
 #ifdef GRAPHLIBRARY_EXPORTS
 #define GRAPHLIBRARY_API __declspec(dllexport)
@@ -17,12 +18,11 @@ public:
 	bool Load(string path);
 	virtual void AddNode(int index) = 0;
 	virtual void AddEdge(int node1, int node2);
-	/*
-	virtual list<int> GetNeighbors(int nodeIndex) = 0;
-	
-	void BreadthFirstSearch(Tree tree);
-	void DepthFirstSearch(Tree tree);
-	//*/
+	virtual void Sort();
+
+	void BreadthFirstSearch(int startNodeIndex, vector<bool> visited, vector<int> parent, vector<int> level);
+	virtual forward_list<int> GetNeighbors(int nodeIndex) = 0;
+
 	unsigned int getNodesCount() { return m_NodesCount; }
 	unsigned int getEdgesCount() { return m_EdgesCount; }
 
@@ -38,10 +38,3 @@ protected:
 	unsigned int m_MaxDegree = 0;
 	unsigned int m_MedDegree = 0;
 };
-/*
-class Tree
-{
-public:
-
-};
-*/

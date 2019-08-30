@@ -9,7 +9,9 @@ class GRAPHLIBRARY_API ListGraph :
 public:
 	void AddNode(int index) override;
 	void AddEdge(int node1, int node2) override;
+	void Sort() override;
 
+	forward_list<int> GetNeighbors(int nodeIndex) override;
 
 protected:
 	void Resize(unsigned int count) override;
