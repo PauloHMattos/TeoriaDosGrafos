@@ -1,5 +1,9 @@
 #include "pch.h"
 #include "ListGraph.h"
+#include <execution>
+#include <ppl.h>
+
+using namespace concurrency;
 
 void ListGraph::AddNode(int index)
 {
@@ -19,10 +23,36 @@ void ListGraph::AddEdge(int node1, int node2)
 
 void ListGraph::Sort()
 {
+	/*
+	parallel_for(unsigned int(0), m_NodesCount, [&](int i)
+	{
+		forward_list<int> list = m_LinkedList[i];
+		list.sort();
+	});
+	//*/
+	/*
+	std::for_each(std::execution::par_unseq, m_LinkedList.begin(), m_LinkedList.end(), [&](int i)
+	{
+		m_LinkedList[i].sort();
+	});
+	//*/
+	//*
+#pragma omp parallel for
 	for (int i = 0; i < m_NodesCount; i++)
 	{
 		m_LinkedList[i].sort();
 	}
+	//*/
+
+	/*
+	for (int i = 0; i < m_NodesCount; i++)
+	{
+		forward_list<int> list = m_LinkedList[i];
+		sort(std::execution::par_unseq, list.begin(), list.end());
+	}
+	//*/
+
+
 }
 
 forward_list<int> ListGraph::GetNeighbors(int nodeIndex)
