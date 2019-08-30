@@ -35,7 +35,8 @@ int main()
 	string path;
 	//cin >> path;
 
-	if (!graph->Load(""))
+	if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\as_graph.txt"))
+	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\dblp.txt"))
 	{
 		cout << "Arquivo não encontrado";
 		system("pause");
@@ -44,6 +45,12 @@ int main()
 
 	cout << "Numero de vertices: " << graph->getNodesCount() << "\n";
 	cout << "Numero de arestas: " << graph->getEdgesCount() << "\n";
+	system("pause");
+
+	vector<bool> visited(graph->getNodesCount());
+	vector<int> parent(graph->getNodesCount());
+	vector<int> level(graph->getNodesCount());
+	graph->DepthFirstSearch(1, visited, parent, level);
 	system("pause");
 }
 

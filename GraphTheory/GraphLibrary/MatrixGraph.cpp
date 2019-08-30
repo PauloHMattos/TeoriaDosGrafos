@@ -4,7 +4,7 @@
 void MatrixGraph::AddNode(int index)
 {
 	vector<bool> line = vector<bool>(m_NodesCount);
-	m_Matrix.push_back(line);
+	m_Matrix[index] = line;
 }
 
 void MatrixGraph::AddEdge(int node1, int node2)
@@ -37,6 +37,6 @@ forward_list<int> MatrixGraph::GetNeighbors(int nodeIndex)
 void MatrixGraph::Resize(unsigned int count)
 {
 	m_NodesCount = count;
-	m_Matrix = vector<vector<bool>>();
-	m_Matrix.reserve(count);
+	m_Matrix = vector<vector<bool>>(count);
+	//m_Matrix.reserve(count);
 }

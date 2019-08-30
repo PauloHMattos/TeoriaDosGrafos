@@ -8,8 +8,7 @@
 bool Graph::Load(string path)
 {
 	ifstream file;
-	file.open("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\as_graph.txt");
-	//file.open(path);
+	file.open(path);
 
 	if (!file.good())
 	{
@@ -50,15 +49,13 @@ void Graph::Sort()
 void Graph::BreadthFirstSearch(int startNodeIndex, vector<bool> visited, vector<int> parent, vector<int> level)
 {
 	queue<int> q;
-
-	startNodeIndex -= 1;
-
+	
 	q.push(startNodeIndex);
-	visited[startNodeIndex] = true;
+	visited[startNodeIndex - 1] = true;
 
 	int currentLevel = 0;
-	parent[startNodeIndex] = 0;
-	level[startNodeIndex] = currentLevel++;
+	parent[startNodeIndex - 1] = 0;
+	level[startNodeIndex - 1] = currentLevel++;
 
 	while (!q.empty())
 	{
@@ -70,7 +67,11 @@ void Graph::BreadthFirstSearch(int startNodeIndex, vector<bool> visited, vector<
 
 		for (it = neighbors.begin(); it != neighbors.end(); ++it)
 		{
-			int neighborId = *it;
+			int neighborId = *it - 1;
+			if (neighborId >= m_NodesCount)
+			{
+				continue;
+			}
 			if (visited[neighborId])
 			{
 				continue;
@@ -89,31 +90,30 @@ void Graph::DepthFirstSearch(int startNodeIndex, vector<bool> visited, vector<in
 {
 	stack<int> stk;
 
-	startNodeIndex -= 1;
 
 	stk.push(startNodeIndex);
 
 	int currentLevel = 0;
-	parent[startNodeIndex] = 0;
-	level[startNodeIndex] = currentLevel++;
+	parent[startNodeIndex - 1] = 0;
+	level[startNodeIndex - 1] = currentLevel++;
 
 	while (!stk.empty())
 	{
 		int nodeId = stk.top();
 		stk.pop();
 
-		if (visited[nodeId])
+		if (visited[nodeId - 1])
 		{
 			continue;
 		}
-		visited[nodeId] = true;
+		visited[nodeId - 1] = true;
 
 		forward_list<int>::iterator it;
 		forward_list<int> neighbors = GetNeighbors(nodeId);
 
 		for (it = neighbors.begin(); it != neighbors.end(); ++it)
 		{
-			int neighborId = *it;
+			int neighborId = *it - 1;
 			visited[neighborId] = true;
 			stk.push(*it);
 

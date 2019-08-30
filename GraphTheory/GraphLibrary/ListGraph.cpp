@@ -13,8 +13,8 @@ void ListGraph::AddEdge(int node1, int node2)
 		return;
 	}
 	Graph::AddEdge(node1, node2);
-	m_LinkedList[node1 - 1].push_front(node2 - 1);
-	m_LinkedList[node2 - 1].push_front(node1 - 1);
+	m_LinkedList[node1 - 1].push_front(node2);
+	m_LinkedList[node2 - 1].push_front(node1);
 }
 
 void ListGraph::Sort()
