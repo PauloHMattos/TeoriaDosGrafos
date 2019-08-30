@@ -7,12 +7,16 @@
 
 int main()
 {
-    std::cout << "Digite o nome do arquivo a ser analizado\n";
+    cout << "Digite o nome do arquivo a ser analizado\n";
 	string path;
-	//std::cin >> path;
+	//cin >> path;
 
 	Graph *graph = new ListGraph();
 	graph->Load("");
+
+	cout << "Numero de vertices: " << graph->getNodesCount() << "\n";
+	cout << "Numero de arestas: " << graph->getEdgesCount() << "\n";
+	system("pause");
 }
 
 // Executar programa: Ctrl + F5 ou Menu Depurar > Iniciar Sem Depuração
