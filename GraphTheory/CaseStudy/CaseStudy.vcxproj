@@ -100,7 +100,7 @@
       <AdditionalDependencies>GraphLibrary.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "..\GraphLibrary\$(IntDir)GraphLibrary.dll" "$(OutDir)"</Command>
+      <Command>xcopy /y /d "..\GraphLibrary\$(IntDir)*" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

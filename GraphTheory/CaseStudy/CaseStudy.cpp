@@ -6,7 +6,12 @@
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    std::cout << "Digite o nome do arquivo a ser analizado\n";
+	string path;
+	std::cin >> path;
+
+	Graph *graph = new Graph();
+	graph->Load(path);
 }
 
 // Executar programa: Ctrl + F5 ou Menu Depurar > Iniciar Sem Depuração
