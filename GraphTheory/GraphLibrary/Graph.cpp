@@ -12,9 +12,13 @@ void Graph::Load(string path)
 
 	unsigned int nodesCount;
 	file >> nodesCount;
-	while (getNodesCount() < nodesCount)
+	Resize(nodesCount);
+
+	nodesCount = 0;
+	while (nodesCount < getNodesCount())
 	{
-		AddNode(getNodesCount());
+		AddNode(nodesCount);
+		nodesCount++;
 	}
 
 	int node1, node2;
@@ -22,11 +26,6 @@ void Graph::Load(string path)
 	{
 		AddEdge(node1, node2);
 	}
-}
-
-void Graph::AddNode(int index)
-{
-	m_NodesCount++;
 }
 
 void Graph::AddEdge(int node1, int node2)

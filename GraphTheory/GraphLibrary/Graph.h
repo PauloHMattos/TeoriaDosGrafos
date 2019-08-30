@@ -15,7 +15,7 @@ class GRAPHLIBRARY_API Graph
 {
 public:
 	void Load(string path);
-	virtual void AddNode(int index);
+	virtual void AddNode(int index) = 0;
 	virtual void AddEdge(int node1, int node2);
 	/*
 	virtual list<int> GetNeighbors(int nodeIndex) = 0;
@@ -26,13 +26,12 @@ public:
 	unsigned int getNodesCount() { return m_NodesCount; }
 	unsigned int getEdgesCount() { return m_EdgesCount; }
 
-	
-	void UpdateOutputs();
 	unsigned int getMinDegree() { return m_MinDegree; }
 	unsigned int getMaxDegree() { return m_MaxDegree; }
 	unsigned int getMedDegree() { return m_MedDegree; }
 
 protected:
+	virtual void Resize(unsigned int count) = 0;
 	unsigned int m_NodesCount = 0;
 	unsigned int m_EdgesCount = 0;
 	unsigned int m_MinDegree = 0;
