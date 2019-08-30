@@ -40,3 +40,11 @@ protected:
 	unsigned int m_MaxDegree = 0;
 	unsigned int m_MedDegree = 0;
 };
+
+
+#define INIT_TIMER auto start = std::chrono::high_resolution_clock::now()
+#define START_TIMER  start = std::chrono::high_resolution_clock::now()
+#define STOP_TIMER(name)  std::cout << "RUNTIME of " << name << ": " << \
+    std::chrono::duration_cast<std::chrono::milliseconds>( \
+            std::chrono::high_resolution_clock::now()-start \
+    ).count() << " ms " << std::endl;

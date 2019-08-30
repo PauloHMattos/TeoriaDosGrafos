@@ -4,9 +4,14 @@
 #include <fstream>
 #include <queue>
 #include <stack>
+#include <execution>
+#include <omp.h>
+#include <iostream>
 
 bool Graph::Load(string path)
 {
+	INIT_TIMER;
+	START_TIMER;
 	ifstream file;
 	file.open(path);
 
@@ -31,8 +36,12 @@ bool Graph::Load(string path)
 	{
 		AddEdge(node1, node2);
 	}
+	STOP_TIMER("File Read");
 
+	START_TIMER;
 	Sort();
+	STOP_TIMER("Sort");
+
 	return true;
 }
 
@@ -68,10 +77,6 @@ void Graph::BreadthFirstSearch(int startNodeIndex, vector<bool> visited, vector<
 		for (it = neighbors.begin(); it != neighbors.end(); ++it)
 		{
 			int neighborId = *it - 1;
-			if (neighborId >= m_NodesCount)
-			{
-				continue;
-			}
 			if (visited[neighborId])
 			{
 				continue;
