@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <queue>
+#include <stack>
 
 bool Graph::Load(string path)
 {
@@ -49,7 +50,7 @@ void Graph::Sort()
 void Graph::BreadthFirstSearch(int startNodeIndex, vector<bool> visited, vector<int> parent, vector<int> level)
 {
 	queue<int> q;
-	
+
 	startNodeIndex -= 1;
 
 	q.push(startNodeIndex);
@@ -76,6 +77,45 @@ void Graph::BreadthFirstSearch(int startNodeIndex, vector<bool> visited, vector<
 			}
 			visited[neighborId] = true;
 			q.push(*it);
+
+			parent[neighborId] = nodeId;
+			level[neighborId] = currentLevel;
+		}
+		currentLevel++;
+	}
+}
+
+void Graph::DepthFirstSearch(int startNodeIndex, vector<bool> visited, vector<int> parent, vector<int> level)
+{
+	stack<int> stk;
+
+	startNodeIndex -= 1;
+
+	stk.push(startNodeIndex);
+
+	int currentLevel = 0;
+	parent[startNodeIndex] = 0;
+	level[startNodeIndex] = currentLevel++;
+
+	while (!stk.empty())
+	{
+		int nodeId = stk.top();
+		stk.pop();
+
+		if (visited[nodeId])
+		{
+			continue;
+		}
+		visited[nodeId] = true;
+
+		forward_list<int>::iterator it;
+		forward_list<int> neighbors = GetNeighbors(nodeId);
+
+		for (it = neighbors.begin(); it != neighbors.end(); ++it)
+		{
+			int neighborId = *it;
+			visited[neighborId] = true;
+			stk.push(*it);
 
 			parent[neighborId] = nodeId;
 			level[neighborId] = currentLevel;

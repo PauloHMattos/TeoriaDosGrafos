@@ -21,6 +21,8 @@ public:
 	virtual void Sort();
 
 	void BreadthFirstSearch(int startNodeIndex, vector<bool> visited, vector<int> parent, vector<int> level);
+	void DepthFirstSearch(int startNodeIndex, vector<bool> visited, vector<int> parent, vector<int> level);
+
 	virtual forward_list<int> GetNeighbors(int nodeIndex) = 0;
 
 	unsigned int getNodesCount() { return m_NodesCount; }
