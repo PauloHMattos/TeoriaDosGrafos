@@ -4,15 +4,43 @@
 #include <iostream>
 #include "Graph.h"
 #include "ListGraph.h"
+#include "MatrixGraph.h"
 
 int main()
 {
-    cout << "Digite o nome do arquivo a ser analizado\n";
+	int dataStructure;
+	cout << "Escolha a estrutura de representação do grafo:\n";
+	cout << "	1 - Lista de adjacencia;\n";
+	cout << "	2 - Matriz de adjacencia;\n";
+	cin >> dataStructure;
+
+	Graph* graph;
+	if (dataStructure == 1)
+	{
+		graph = new ListGraph();
+	}
+	else if (dataStructure == 2)
+	{
+		graph = new MatrixGraph();
+	}
+	else
+	{
+		cout << "Escolha inválida";
+		system("pause");
+		return 0;
+	}
+
+
+	cout << "Digite o nome do arquivo a ser analizado\n";
 	string path;
 	//cin >> path;
 
-	Graph *graph = new ListGraph();
-	graph->Load("");
+	if (!graph->Load(""))
+	{
+		cout << "Arquivo não encontrado";
+		system("pause");
+		return 0;
+	}
 
 	cout << "Numero de vertices: " << graph->getNodesCount() << "\n";
 	cout << "Numero de arestas: " << graph->getEdgesCount() << "\n";

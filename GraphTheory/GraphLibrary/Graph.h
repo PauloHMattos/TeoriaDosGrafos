@@ -14,7 +14,7 @@ using namespace std;
 class GRAPHLIBRARY_API Graph
 {
 public:
-	void Load(string path);
+	bool Load(string path);
 	virtual void AddNode(int index) = 0;
 	virtual void AddEdge(int node1, int node2);
 	/*

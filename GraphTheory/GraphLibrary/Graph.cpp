@@ -4,11 +4,16 @@
 #include <fstream>
 
 
-void Graph::Load(string path)
+bool Graph::Load(string path)
 {
 	ifstream file;
 	file.open("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\as_graph.txt");
 	//file.open(path);
+
+	if (!file.good())
+	{
+		return false;
+	}
 
 	unsigned int nodesCount;
 	file >> nodesCount;
@@ -26,6 +31,7 @@ void Graph::Load(string path)
 	{
 		AddEdge(node1, node2);
 	}
+	return true;
 }
 
 void Graph::AddEdge(int node1, int node2)
