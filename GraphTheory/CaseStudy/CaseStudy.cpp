@@ -37,9 +37,10 @@ int main()
 	string path;
 	//cin >> path;
 
-	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\as_graph.txt"))
-	if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\live_journal.txt"))
+	if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\as_graph.txt"))
+	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\live_journal.txt"))
 	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\dblp.txt"))
+	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\graph_1.txt"))
 	{
 		cout << "Arquivo não encontrado";
 		system("pause");
@@ -48,8 +49,12 @@ int main()
 
 	cout << "Numero de vertices: " << graph->getNodesCount() << "\n";
 	cout << "Numero de arestas: " << graph->getEdgesCount() << "\n";
-	//system("pause");
 
+	int diameter = graph->FindDiameter(10);
+	cout << "FindDiameter(10): " << diameter << "\n";
+
+	//system("pause");
+	//*
 	unsigned int dist = graph->Distance(10, 20);
 	cout << "Distancia (10, 20): " << dist << "\n";
 	dist = graph->Distance(10, 30);
@@ -57,6 +62,7 @@ int main()
 	dist = graph->Distance(20, 30);
 	cout << "Distancia (20, 30): " << dist << "\n";
 	return 0;
+	//*/
 	INIT_TIMER;
 
 	int runCnt = 500;

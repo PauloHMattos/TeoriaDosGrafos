@@ -24,6 +24,7 @@ public:
 	void DepthFirstSearch(unsigned int startNodeIndex, vector<unsigned int>& parent, vector<int>& level, unsigned int goalNodeIndex = UINT_MAX);
 
 	unsigned int Distance(unsigned int node1, unsigned int node2);
+	unsigned int FindDiameter(unsigned int startNode);
 
 	virtual forward_list<int> GetNeighbors(unsigned int nodeIndex) = 0;
 

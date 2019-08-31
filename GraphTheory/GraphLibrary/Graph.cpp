@@ -125,3 +125,20 @@ unsigned int Graph::Distance(unsigned int node1, unsigned int node2)
 	BreadthFirstSearch(node1, parent, level, node2);
 	return level[node2 - 1];
 }
+
+unsigned int Graph::FindDiameter(unsigned int startNode)
+{
+	vector<unsigned int> parent(getNodesCount(), UINT_MAX);
+	vector<int> level(getNodesCount(), -1);
+	BreadthFirstSearch(startNode, parent, level);
+
+	int diameter = 0;
+	for (unsigned int i = 0; i < getNodesCount(); i++)
+	{
+		if (level[i] > diameter)
+		{
+			diameter = level[i];
+		}
+	}
+	return diameter;
+}
