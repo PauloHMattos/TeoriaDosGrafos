@@ -37,8 +37,8 @@ int main()
 	string path;
 	//cin >> path;
 
-	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\as_graph.txt"))
-	if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\dblp.txt"))
+	if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\as_graph.txt"))
+	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\live_journal.txt"))
 	{
 		cout << "Arquivo não encontrado";
 		system("pause");
@@ -47,26 +47,35 @@ int main()
 
 	cout << "Numero de vertices: " << graph->getNodesCount() << "\n";
 	cout << "Numero de arestas: " << graph->getEdgesCount() << "\n";
-	system("pause");
+	//system("pause");
 
-	vector<bool> visited(graph->getNodesCount());
-	vector<int> parent(graph->getNodesCount());
-	vector<int> level(graph->getNodesCount());
 
 	INIT_TIMER;
+
+	int runCnt = 500;
+	//*
 	START_TIMER;
-	graph->DepthFirstSearch(1, visited, parent, level);
-	STOP_TIMER("DFS");
+	for (int i = 0; i < runCnt; i++)
+	{
+		vector<bool> visited(graph->getNodesCount());
+		vector<int> parent(graph->getNodesCount());
+		vector<int> level(graph->getNodesCount());
+		graph->BreadthFirstSearch(1, visited, parent, level);
+	}
+	STOP_TIMER_I("BFS", runCnt);
+	//*/
+	//*
+	START_TIMER;
+	for (int i = 0; i < runCnt; i++)
+	{
+		vector<bool> visited(graph->getNodesCount());
+		vector<int> parent(graph->getNodesCount());
+		vector<int> level(graph->getNodesCount());
+		graph->DepthFirstSearch(1, visited, parent, level);
+	}
+	STOP_TIMER_I("DFS", runCnt);
+	//*/
 	system("pause");
+
+	return 0;
 }
-
-// Executar programa: Ctrl + F5 ou Menu Depurar > Iniciar Sem Depuração
-// Depurar programa: F5 ou menu Depurar > Iniciar Depuração
-
-// Dicas para Começar: 
-//   1. Use a janela do Gerenciador de Soluções para adicionar/gerenciar arquivos
-//   2. Use a janela do Team Explorer para conectar-se ao controle do código-fonte
-//   3. Use a janela de Saída para ver mensagens de saída do build e outras mensagens
-//   4. Use a janela Lista de Erros para exibir erros
-//   5. Ir Para o Projeto > Adicionar Novo Item para criar novos arquivos de código, ou Projeto > Adicionar Item Existente para adicionar arquivos de código existentes ao projeto
-//   6. No futuro, para abrir este projeto novamente, vá para Arquivo > Abrir > Projeto e selecione o arquivo. sln

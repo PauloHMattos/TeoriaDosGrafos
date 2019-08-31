@@ -9,5 +9,6 @@
 
 // adicione os cabeçalhos que você deseja pré-compilar aqui
 #include "framework.h"
+#include <chrono>
 
 #endif //PCH_H

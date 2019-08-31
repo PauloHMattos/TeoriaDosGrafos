@@ -4,8 +4,6 @@
 #include <fstream>
 #include <queue>
 #include <stack>
-#include <execution>
-#include <omp.h>
 #include <iostream>
 
 bool Graph::Load(string path)
