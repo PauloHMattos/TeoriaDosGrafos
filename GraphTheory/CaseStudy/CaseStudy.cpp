@@ -40,9 +40,9 @@ int main()
 	//cin >> path;
 
 	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\as_graph.txt"))
-	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\live_journal.txt"))
+	if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\live_journal.txt"))
 	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\dblp.txt"))
-	if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\graph_1.txt"))
+	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\graph_1.txt"))
 	{
 		cout << "Arquivo não encontrado";
 		system("pause");
@@ -53,11 +53,13 @@ int main()
 	cout << "Numero de arestas: " << graph->getEdgesCount() << "\n";
 
 	START_TIMER;
-	forward_list<forward_list<unsigned int>> components = graph->GetConnectedComponents();
+	list<list<unsigned int>> components = graph->GetConnectedComponents();
 	STOP_TIMER_I("GetConnectedComponents", 1);
 
-	for (forward_list<unsigned int> component : components)
+	cout << "Numero de componentes: " << components.size() << "\n";
+	for (list<unsigned int> component : components)
 	{
+		cout << "Size: " << component.size() << "\n";
 		for (unsigned int nodeId : component)
 		{
 			cout << nodeId << ", ";

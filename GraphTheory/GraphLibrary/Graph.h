@@ -2,6 +2,7 @@
 
 #include <string>
 #include <forward_list>
+#include <list>
 #include <vector>
 
 #ifdef GRAPHLIBRARY_EXPORTS
@@ -27,7 +28,7 @@ public:
 	unsigned int FindDiameter();
 
 
-	forward_list<forward_list<unsigned int>> GetConnectedComponents();
+	list<list<unsigned int>> GetConnectedComponents();
 
 
 	virtual forward_list<unsigned int> GetNeighbors(unsigned int nodeIndex) = 0;

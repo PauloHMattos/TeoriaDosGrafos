@@ -133,11 +133,11 @@ void Graph::DepthFirstSearch(unsigned int startNodeIndex, vector<unsigned int> &
 	}
 }
 
-forward_list<forward_list<unsigned int>> Graph::GetConnectedComponents()
+list<list<unsigned int>> Graph::GetConnectedComponents()
 {
 	// Guarda os ponteiros
-	auto map = vector<forward_list<unsigned int>*>(getNodesCount());
-	auto components = forward_list<forward_list<unsigned int>>();
+	auto map = vector<list<unsigned int>*>(getNodesCount());
+	auto components = list<list<unsigned int>>();
 
 	vector<unsigned int> parent(getNodesCount(), UINT_MAX);
 
@@ -149,7 +149,7 @@ forward_list<forward_list<unsigned int>> Graph::GetConnectedComponents()
 		}
 		DFSUtil(nodeId, parent);
 
-		components.push_front(forward_list<unsigned int>());
+		components.push_front(list<unsigned int>());
 
 		map[nodeId - 1] = &*components.begin();
 		map[nodeId - 1]->push_front(nodeId);
