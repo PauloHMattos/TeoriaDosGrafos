@@ -37,8 +37,9 @@ int main()
 	string path;
 	//cin >> path;
 
-	if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\as_graph.txt"))
-	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\live_journal.txt"))
+	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\as_graph.txt"))
+	if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\live_journal.txt"))
+	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\dblp.txt"))
 	{
 		cout << "Arquivo não encontrado";
 		system("pause");
@@ -49,7 +50,13 @@ int main()
 	cout << "Numero de arestas: " << graph->getEdgesCount() << "\n";
 	//system("pause");
 
-
+	unsigned int dist = graph->Distance(10, 20);
+	cout << "Distancia (10, 20): " << dist << "\n";
+	dist = graph->Distance(10, 30);
+	cout << "Distancia (10, 30): " << dist << "\n";
+	dist = graph->Distance(20, 30);
+	cout << "Distancia (20, 30): " << dist << "\n";
+	return 0;
 	INIT_TIMER;
 
 	int runCnt = 500;
@@ -57,10 +64,9 @@ int main()
 	START_TIMER;
 	for (int i = 0; i < runCnt; i++)
 	{
-		vector<bool> visited(graph->getNodesCount());
-		vector<int> parent(graph->getNodesCount());
-		vector<int> level(graph->getNodesCount());
-		graph->BreadthFirstSearch(1, visited, parent, level);
+		vector<unsigned int> parent(graph->getNodesCount(), UINT_MAX);
+		vector<int> level(graph->getNodesCount(), -1);
+		graph->BreadthFirstSearch(1, parent, level);
 	}
 	STOP_TIMER_I("BFS", runCnt);
 	//*/
@@ -68,10 +74,9 @@ int main()
 	START_TIMER;
 	for (int i = 0; i < runCnt; i++)
 	{
-		vector<bool> visited(graph->getNodesCount());
-		vector<int> parent(graph->getNodesCount());
-		vector<int> level(graph->getNodesCount());
-		graph->DepthFirstSearch(1, visited, parent, level);
+		vector<unsigned int> parent(graph->getNodesCount(), UINT_MAX);
+		vector<int> level(graph->getNodesCount(), -1);
+		graph->DepthFirstSearch(1, parent, level);
 	}
 	STOP_TIMER_I("DFS", runCnt);
 	//*/

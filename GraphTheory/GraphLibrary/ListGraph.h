@@ -7,11 +7,11 @@ class GRAPHLIBRARY_API ListGraph :
 	public Graph
 {
 public:
-	void AddNode(int index) override;
-	void AddEdge(int node1, int node2) override;
+	void AddNode(unsigned int index) override;
+	void AddEdge(unsigned int node1, unsigned int node2) override;
 	void Sort() override;
 
-	forward_list<int> GetNeighbors(int nodeIndex) override;
+	forward_list<int> GetNeighbors(unsigned int nodeIndex) override;
 
 protected:
 	void Resize(unsigned int count) override;

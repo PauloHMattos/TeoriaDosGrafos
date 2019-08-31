@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "MatrixGraph.h"
 
-void MatrixGraph::AddNode(int index)
+void MatrixGraph::AddNode(unsigned int index)
 {
 	vector<bool> line = vector<bool>(m_NodesCount);
 	m_Matrix[index] = line;
 }
 
-void MatrixGraph::AddEdge(int node1, int node2)
+void MatrixGraph::AddEdge(unsigned int node1, unsigned int node2)
 {
 	if (node1 > m_NodesCount || node2 > m_NodesCount)
 	{
@@ -19,7 +19,7 @@ void MatrixGraph::AddEdge(int node1, int node2)
 	m_Matrix[node2 - 1][node1 - 1] = 1;
 }
 
-forward_list<int> MatrixGraph::GetNeighbors(int nodeIndex)
+forward_list<int> MatrixGraph::GetNeighbors(unsigned int nodeIndex)
 {
 	forward_list<int> neighbors;
 	

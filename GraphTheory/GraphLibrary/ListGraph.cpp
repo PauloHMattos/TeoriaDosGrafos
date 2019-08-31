@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "ListGraph.h"
 
-void ListGraph::AddNode(int index)
+void ListGraph::AddNode(unsigned int index)
 {
 	m_LinkedList.push_back(forward_list<int>());
 }
 
-void ListGraph::AddEdge(int node1, int node2)
+void ListGraph::AddEdge(unsigned int node1, unsigned int node2)
 {
 	if (node1 > m_NodesCount || node2 > m_NodesCount)
 	{
@@ -25,7 +25,7 @@ void ListGraph::Sort()
 	}
 }
 
-forward_list<int> ListGraph::GetNeighbors(int nodeIndex)
+forward_list<int> ListGraph::GetNeighbors(unsigned int nodeIndex)
 {
 	return m_LinkedList[nodeIndex - 1];
 }

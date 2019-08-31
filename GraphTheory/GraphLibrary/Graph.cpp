@@ -5,6 +5,7 @@
 #include <queue>
 #include <stack>
 #include <iostream>
+#include <climits>
 
 bool Graph::Load(string path)
 {
@@ -43,7 +44,7 @@ bool Graph::Load(string path)
 	return true;
 }
 
-void Graph::AddEdge(int node1, int node2)
+void Graph::AddEdge(unsigned int node1, unsigned int node2)
 {
 	m_EdgesCount++;
 }
@@ -53,46 +54,40 @@ void Graph::Sort()
 {
 }
 
-void Graph::BreadthFirstSearch(int startNodeIndex, vector<bool> visited, vector<int> parent, vector<int> level)
+void Graph::BreadthFirstSearch(unsigned int startNodeIndex, vector<unsigned int>& parent, vector<int>& level, unsigned int goalNodeIndex)
 {
 	queue<int> q;
 	
 	q.push(startNodeIndex);
-	visited[startNodeIndex - 1] = true;
-
 	int currentLevel = 0;
 	parent[startNodeIndex - 1] = 0;
-	level[startNodeIndex - 1] = currentLevel++;
+	level[startNodeIndex - 1] = 0;
 
 	while (!q.empty())
 	{
 		int nodeId = q.front();
 		q.pop();
-
-		forward_list<int>::iterator it;
-		forward_list<int> neighbors = GetNeighbors(nodeId);
-
-		for (it = neighbors.begin(); it != neighbors.end(); ++it)
+		if (goalNodeIndex == nodeId)
 		{
-			int neighborId = *it - 1;
-			if (visited[neighborId])
+			return;
+		}
+
+		for each (int neighborId in GetNeighbors(nodeId))
+		{
+			if (level[neighborId - 1] != -1)
 			{
 				continue;
 			}
-			visited[neighborId] = true;
-			q.push(*it);
-
-			parent[neighborId] = nodeId;
-			level[neighborId] = currentLevel;
+			parent[neighborId - 1] = nodeId;
+			level[neighborId - 1] = level[nodeId - 1] + 1;
+			q.push(neighborId);
 		}
-		currentLevel++;
 	}
 }
 
-void Graph::DepthFirstSearch(int startNodeIndex, vector<bool> visited, vector<int> parent, vector<int> level)
+void Graph::DepthFirstSearch(unsigned int startNodeIndex, vector<unsigned int> &parent, vector<int> &level, unsigned int goalNodeIndex)
 {
 	stack<int> stk;
-
 
 	stk.push(startNodeIndex);
 
@@ -104,25 +99,29 @@ void Graph::DepthFirstSearch(int startNodeIndex, vector<bool> visited, vector<in
 	{
 		int nodeId = stk.top();
 		stk.pop();
+		if (goalNodeIndex == nodeId)
+		{
+			return;
+		}
 
-		if (visited[nodeId - 1])
+		if (level[nodeId - 1] != -1)
 		{
 			continue;
 		}
-		visited[nodeId - 1] = true;
-
-		forward_list<int>::iterator it;
-		forward_list<int> neighbors = GetNeighbors(nodeId);
-
-		for (it = neighbors.begin(); it != neighbors.end(); ++it)
+		for each (int neighborId in GetNeighbors(nodeId))
 		{
-			int neighborId = *it - 1;
-			visited[neighborId] = true;
-			stk.push(*it);
-
-			parent[neighborId] = nodeId;
-			level[neighborId] = currentLevel;
+			parent[neighborId - 1] = nodeId;
+			level[neighborId - 1] = currentLevel;
+			stk.push(neighborId);
 		}
 		currentLevel++;
 	}
+}
+
+unsigned int Graph::Distance(unsigned int node1, unsigned int node2)
+{
+	vector<unsigned int> parent(getNodesCount(), UINT_MAX);
+	vector<int> level(getNodesCount(), -1);
+	BreadthFirstSearch(node1, parent, level, node2);
+	return level[node2 - 1];
 }
