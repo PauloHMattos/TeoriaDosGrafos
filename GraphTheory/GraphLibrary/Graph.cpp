@@ -47,6 +47,8 @@ bool Graph::Load(string path)
 void Graph::AddEdge(unsigned int node1, unsigned int node2)
 {
 	m_EdgesCount++;
+	m_Degrees[node1 - 1] += 1;
+	m_Degrees[node2 - 1] += 1;
 }
 
 // Garante que os vizinhos estejam ordenados do menor para o maior
@@ -141,4 +143,80 @@ unsigned int Graph::FindDiameter(unsigned int startNode)
 		}
 	}
 	return diameter;
+}
+
+unsigned int Graph::getDegree(unsigned int nodeIndex)
+{
+	if (nodeIndex > m_NodesCount)
+	{
+		return UINT_MAX;
+	}
+	return m_Degrees[nodeIndex - 1];
+}
+
+unsigned int Graph::getMinDegree()
+{
+	unsigned int result = UINT_MAX;
+	for each (unsigned int degree in m_Degrees)
+	{
+		if (degree < result)
+		{
+			result = degree;
+		}
+	}
+	return result;
+}
+
+unsigned int Graph::getMaxDegree()
+{
+	unsigned int result = 0;
+	for each (unsigned int degree in m_Degrees)
+	{
+		if (degree > result)
+		{
+			result = degree;
+		}
+	}
+	return result;
+}
+
+float Graph::getMeanDegree()
+{
+	if (m_NodesCount == 0)
+	{
+		return 0;
+	}
+	return m_EdgesCount / m_NodesCount;
+}
+
+unsigned int Graph::getMedianDegree()
+{
+	int size = m_Degrees.size();
+
+	if (size == 0)
+	{
+		return 0;
+	}
+	else
+	{
+		// Cria uma cópia para não alterar o vetor original
+		vector<unsigned int> degrees(m_Degrees);
+		sort(degrees.begin(), degrees.end());
+
+		if (size % 2 == 0)
+		{
+			return (degrees[size / 2 - 1] + degrees[size / 2]) / 2;
+		}
+		else
+		{
+			return degrees[size / 2];
+		}
+	}
+}
+
+
+
+void Graph::Resize(unsigned int count)
+{
+	m_Degrees = vector<unsigned int>(count);
 }

@@ -28,6 +28,7 @@ forward_list<int> ListGraph::GetNeighbors(unsigned int nodeIndex)
 
 void ListGraph::Resize(unsigned int count)
 {
+	Graph::Resize(count);
 	m_NodesCount = count;
 	m_LinkedList.reserve(count);
 }

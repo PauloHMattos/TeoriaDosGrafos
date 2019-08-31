@@ -31,17 +31,19 @@ public:
 	unsigned int getNodesCount() { return m_NodesCount; }
 	unsigned int getEdgesCount() { return m_EdgesCount; }
 
-	unsigned int getMinDegree() { return m_MinDegree; }
-	unsigned int getMaxDegree() { return m_MaxDegree; }
-	unsigned int getMedDegree() { return m_MedDegree; }
+	unsigned int getDegree(unsigned int nodeIndex);
+
+	unsigned int getMinDegree();
+	unsigned int getMaxDegree();
+	float getMeanDegree();
+	unsigned int getMedianDegree();
 
 protected:
-	virtual void Resize(unsigned int count) = 0;
+	virtual void Resize(unsigned int count);
+	vector<unsigned int> m_Degrees;
+
 	unsigned int m_NodesCount = 0;
 	unsigned int m_EdgesCount = 0;
-	unsigned int m_MinDegree = 0;
-	unsigned int m_MaxDegree = 0;
-	unsigned int m_MedDegree = 0;
 };
 
 

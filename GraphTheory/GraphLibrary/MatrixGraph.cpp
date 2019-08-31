@@ -31,6 +31,7 @@ forward_list<int> MatrixGraph::GetNeighbors(unsigned int nodeIndex)
 
 void MatrixGraph::Resize(unsigned int count)
 {
+	Graph::Resize(count);
 	m_NodesCount = count;
 	m_Matrix = vector<vector<bool>>(count);
 }
