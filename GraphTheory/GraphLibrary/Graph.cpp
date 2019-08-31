@@ -129,11 +129,10 @@ forward_list<forward_list<int>> Graph::GetConnectedComponents()
 	auto components = forward_list<forward_list<int>>();
 
 	vector<unsigned int> parent(getNodesCount(), UINT_MAX);
-	vector<int> level(getNodesCount(), -1);
 
 	for (unsigned int nodeId = 1; nodeId < getNodesCount() + 1; nodeId++)
 	{
-		if (parent[nodeId - 1] != -1)
+		if (parent[nodeId - 1] != UINT_MAX)
 		{
 			continue;
 		}
@@ -141,21 +140,26 @@ forward_list<forward_list<int>> Graph::GetConnectedComponents()
 		auto component = forward_list<int>();
 		component.push_front(nodeId);
 
-		DepthFirstSearch(nodeId, parent, level);
+		DFSUtil(nodeId, parent);
 		
-		map[nodeId] = &component;
+		map[nodeId - 1] = &component;
 		components.push_front(component);
 	}
 
 	for (unsigned int nodeId = 0; nodeId < getNodesCount(); nodeId++)
 	{
-		if (parent[nodeId - 1] == -1)
+		if (parent[nodeId] == UINT_MAX)
 		{
 			continue;
 		}
 
-		auto component = map[parent[nodeId - 1]];
-		component->push_front(nodeId);
+		if (parent[nodeId] == 0)
+		{
+			continue;
+		}
+
+		auto component = *map[parent[nodeId] - 1];
+		component.push_front(nodeId);
 	}
 
 	return components;
@@ -261,4 +265,32 @@ unsigned int Graph::getMedianDegree()
 void Graph::Resize(unsigned int count)
 {
 	m_Degrees = vector<unsigned int>(count);
+}
+
+
+void Graph::DFSUtil(unsigned int startNodeIndex, vector<unsigned int>& parent)
+{
+	stack<int> stk;
+
+	stk.push(startNodeIndex);
+
+	int currentLevel = 0;
+	parent[startNodeIndex - 1] = 0;
+
+	while (!stk.empty())
+	{
+		int nodeId = stk.top();
+		stk.pop();
+
+		for each (int neighborId in GetNeighbors(nodeId))
+		{
+			if (parent[neighborId - 1] != UINT_MAX)
+			{
+				continue;
+			}
+
+			parent[neighborId - 1] = startNodeIndex;
+			stk.push(neighborId);
+		}
+	}
 }

@@ -45,6 +45,7 @@ public:
 
 protected:
 	virtual void Resize(unsigned int count);
+	void DFSUtil(unsigned int startNodeIndex, vector<unsigned int>& parent);
 
 
 	vector<unsigned int> m_Degrees;
