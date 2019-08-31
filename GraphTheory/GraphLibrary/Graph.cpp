@@ -7,6 +7,7 @@
 #include <iostream>
 #include <climits>
 
+
 bool Graph::Load(string path)
 {
 	INIT_TIMER;
@@ -120,6 +121,45 @@ void Graph::DepthFirstSearch(unsigned int startNodeIndex, vector<unsigned int> &
 	}
 }
 
+forward_list<forward_list<int>> Graph::GetConnectedComponents()
+{
+	// Guarda os ponteiros
+	auto map = vector<forward_list<int>*>(getNodesCount());
+	auto components = forward_list<forward_list<int>>();
+
+	vector<unsigned int> parent(getNodesCount(), UINT_MAX);
+	vector<int> level(getNodesCount(), -1);
+
+	for (unsigned int nodeId = 1; nodeId < getNodesCount() + 1; nodeId++)
+	{
+		if (parent[nodeId - 1] != -1)
+		{
+			continue;
+		}
+
+		auto component = forward_list<int>();
+		component.push_front(nodeId);
+
+		DepthFirstSearch(nodeId, parent, level);
+		
+		map[nodeId] = &component;
+		components.push_front(component);
+	}
+
+	for (unsigned int nodeId = 0; nodeId < getNodesCount(); nodeId++)
+	{
+		if (parent[nodeId - 1] == -1)
+		{
+			continue;
+		}
+
+		auto component = map[parent[nodeId - 1]];
+		component->push_front(nodeId);
+	}
+
+	return components;
+}
+
 unsigned int Graph::Distance(unsigned int node1, unsigned int node2)
 {
 	vector<unsigned int> parent(getNodesCount(), UINT_MAX);
@@ -130,32 +170,17 @@ unsigned int Graph::Distance(unsigned int node1, unsigned int node2)
 
 unsigned int Graph::FindDiameter()
 {
-	unsigned int result = 0;
-	for (unsigned int nodeId = 1; nodeId < m_NodesCount + 1; nodeId++)
-	{
-		unsigned int diameter = FindDiameter(nodeId);
-		if (diameter > result)
-		{
-			result = diameter;
-		}
-	}
-	return result;
-}
-
-
-// TODO - Tem alguma forma de otimizar isso?
-unsigned int Graph::FindDiameter(unsigned int startNode)
-{
-	vector<unsigned int> parent(getNodesCount(), UINT_MAX);
-	vector<int> level(getNodesCount(), -1);
-	BreadthFirstSearch(startNode, parent, level);
-
+	// O(n^2 log n)
 	int diameter = 0;
-	for (unsigned int i = 0; i < getNodesCount(); i++)
+	for (unsigned int nodeId = 0; nodeId < getNodesCount(); nodeId++)
 	{
-		if (level[i] > diameter)
+		vector<unsigned int> parent(getNodesCount(), UINT_MAX);
+		vector<int> level(getNodesCount(), -1);
+		BreadthFirstSearch(nodeId, parent, level);
+
+		if (level[nodeId] > diameter)
 		{
-			diameter = level[i];
+			diameter = level[nodeId];
 		}
 	}
 	return diameter;

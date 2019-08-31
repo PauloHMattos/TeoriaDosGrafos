@@ -26,7 +26,12 @@ public:
 	unsigned int Distance(unsigned int node1, unsigned int node2);
 	unsigned int FindDiameter();
 
+
+	forward_list<forward_list<int>> GetConnectedComponents();
+
+
 	virtual forward_list<int> GetNeighbors(unsigned int nodeIndex) = 0;
+
 
 	unsigned int getNodesCount() { return m_NodesCount; }
 	unsigned int getEdgesCount() { return m_EdgesCount; }
@@ -40,7 +45,7 @@ public:
 
 protected:
 	virtual void Resize(unsigned int count);
-	unsigned int FindDiameter(unsigned int startNode);
+
 
 	vector<unsigned int> m_Degrees;
 
