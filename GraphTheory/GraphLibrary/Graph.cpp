@@ -96,7 +96,7 @@ void Graph::DepthFirstSearch(unsigned int startNodeIndex, vector<unsigned int> &
 
 	int currentLevel = 0;
 	parent[startNodeIndex - 1] = 0;
-	level[startNodeIndex - 1] = currentLevel++;
+	level[startNodeIndex - 1] = 0;
 
 	while (!stk.empty())
 	{
@@ -107,17 +107,18 @@ void Graph::DepthFirstSearch(unsigned int startNodeIndex, vector<unsigned int> &
 			return;
 		}
 
-		if (level[nodeId - 1] != -1)
-		{
-			continue;
-		}
+		
 		for each (int neighborId in GetNeighbors(nodeId))
 		{
+			if (level[neighborId - 1] != -1)
+			{
+				continue;
+			}
+
 			parent[neighborId - 1] = nodeId;
-			level[neighborId - 1] = currentLevel;
+			level[neighborId - 1] = level[nodeId - 1] + 1;
 			stk.push(neighborId);
 		}
-		currentLevel++;
 	}
 }
 

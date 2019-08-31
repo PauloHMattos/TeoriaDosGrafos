@@ -10,6 +10,8 @@
 
 int main()
 {
+	INIT_TIMER;
+
 	int dataStructure;
 	cout << "Escolha a estrutura de representação do grafo:\n";
 	cout << "	1 - Lista de adjacencia;\n";
@@ -37,8 +39,8 @@ int main()
 	string path;
 	//cin >> path;
 
-	if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\as_graph.txt"))
-	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\live_journal.txt"))
+	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\as_graph.txt"))
+	if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\live_journal.txt"))
 	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\dblp.txt"))
 	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\graph_1.txt"))
 	{
@@ -50,8 +52,11 @@ int main()
 	cout << "Numero de vertices: " << graph->getNodesCount() << "\n";
 	cout << "Numero de arestas: " << graph->getEdgesCount() << "\n";
 
-	int diameter = graph->FindDiameter();
-	cout << "FindDiameter(10): " << diameter << "\n";
+	START_TIMER;
+	auto diameter = graph->GetConnectedComponents();
+	STOP_TIMER_I("GetConnectedComponents", 1);
+
+	//cout << "FindDiameter(10): " << diameter << "\n";
 
 	//system("pause");
 	//*
@@ -63,7 +68,6 @@ int main()
 	cout << "Distancia (20, 30): " << dist << "\n";
 	return 0;
 	//*/
-	INIT_TIMER;
 
 	int runCnt = 500;
 	//*
