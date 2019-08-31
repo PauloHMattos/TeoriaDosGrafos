@@ -133,11 +133,11 @@ void Graph::DepthFirstSearch(unsigned int startNodeIndex, vector<unsigned int> &
 	}
 }
 
-forward_list<forward_list<int>> Graph::GetConnectedComponents()
+forward_list<forward_list<unsigned int>> Graph::GetConnectedComponents()
 {
 	// Guarda os ponteiros
-	auto map = vector<forward_list<int>*>(getNodesCount());
-	auto components = forward_list<forward_list<int>>();
+	auto map = vector<forward_list<unsigned int>*>(getNodesCount());
+	auto components = forward_list<forward_list<unsigned int>>();
 
 	vector<unsigned int> parent(getNodesCount(), UINT_MAX);
 
@@ -147,14 +147,12 @@ forward_list<forward_list<int>> Graph::GetConnectedComponents()
 		{
 			continue;
 		}
-
-		auto component = forward_list<int>();
-		component.push_front(nodeId);
-
 		DFSUtil(nodeId, parent);
-		
-		map[nodeId - 1] = &component;
-		components.push_front(component);
+
+		components.push_front(forward_list<unsigned int>());
+
+		map[nodeId - 1] = &*components.begin();
+		map[nodeId - 1]->push_front(nodeId);
 	}
 
 	for (unsigned int nodeId = 0; nodeId < getNodesCount(); nodeId++)
@@ -163,14 +161,11 @@ forward_list<forward_list<int>> Graph::GetConnectedComponents()
 		{
 			continue;
 		}
-
 		if (parent[nodeId] == 0)
 		{
 			continue;
 		}
-
-		auto component = *map[parent[nodeId] - 1];
-		component.push_front(nodeId);
+		map[parent[nodeId] - 1]->push_front(nodeId + 1);
 	}
 
 	return components;

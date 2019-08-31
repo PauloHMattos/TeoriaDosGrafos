@@ -27,10 +27,10 @@ public:
 	unsigned int FindDiameter();
 
 
-	forward_list<forward_list<int>> GetConnectedComponents();
+	forward_list<forward_list<unsigned int>> GetConnectedComponents();
 
 
-	virtual forward_list<int> GetNeighbors(unsigned int nodeIndex) = 0;
+	virtual forward_list<unsigned int> GetNeighbors(unsigned int nodeIndex) = 0;
 
 
 	unsigned int getNodesCount() { return m_NodesCount; }

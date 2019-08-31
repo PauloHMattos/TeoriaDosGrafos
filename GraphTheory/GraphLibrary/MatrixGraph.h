@@ -8,7 +8,7 @@ class GRAPHLIBRARY_API MatrixGraph :
 public:
 	void AddNode(unsigned int index) override;
 	void AddEdge(unsigned int node1, unsigned int node2) override;
-	forward_list<int> GetNeighbors(unsigned int nodeIndex) override;
+	forward_list<unsigned int> GetNeighbors(unsigned int nodeIndex) override;
 
 protected:
 	void Resize(unsigned int count) override;

@@ -40,9 +40,9 @@ int main()
 	//cin >> path;
 
 	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\as_graph.txt"))
-	if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\live_journal.txt"))
+	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\live_journal.txt"))
 	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\dblp.txt"))
-	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\graph_1.txt"))
+	if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\graph_1.txt"))
 	{
 		cout << "Arquivo não encontrado";
 		system("pause");
@@ -53,14 +53,24 @@ int main()
 	cout << "Numero de arestas: " << graph->getEdgesCount() << "\n";
 
 	START_TIMER;
-	auto diameter = graph->GetConnectedComponents();
+	forward_list<forward_list<unsigned int>> components = graph->GetConnectedComponents();
 	STOP_TIMER_I("GetConnectedComponents", 1);
+
+	for (forward_list<unsigned int> component : components)
+	{
+		for (unsigned int nodeId : component)
+		{
+			cout << nodeId << ", ";
+		}
+		cout << "\n";
+		cout << "\n";
+	}
 
 	//cout << "FindDiameter(10): " << diameter << "\n";
 
 	//system("pause");
 	//*
-	unsigned int dist = graph->Distance(10, 20);
+	unsigned int dist = graph->Distance(1, 6);
 	cout << "Distancia (10, 20): " << dist << "\n";
 	dist = graph->Distance(10, 30);
 	cout << "Distancia (10, 30): " << dist << "\n";

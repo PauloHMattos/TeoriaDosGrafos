@@ -3,7 +3,7 @@
 
 void ListGraph::AddNode(unsigned int index)
 {
-	m_LinkedList.push_back(forward_list<int>());
+	m_LinkedList.push_back(forward_list<unsigned int>());
 }
 
 void ListGraph::AddEdge(unsigned int node1, unsigned int node2)
@@ -21,7 +21,7 @@ void ListGraph::Sort()
 	}
 }
 
-forward_list<int> ListGraph::GetNeighbors(unsigned int nodeIndex)
+forward_list<unsigned int> ListGraph::GetNeighbors(unsigned int nodeIndex)
 {
 	return m_LinkedList[nodeIndex - 1];
 }
