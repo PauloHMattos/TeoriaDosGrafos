@@ -167,21 +167,19 @@ forward_list<forward_list<int>> Graph::GetConnectedComponents()
 
 unsigned int Graph::Distance(unsigned int node1, unsigned int node2)
 {
-	vector<unsigned int> parent(getNodesCount(), UINT_MAX);
 	vector<int> level(getNodesCount(), -1);
-	BreadthFirstSearch(node1, parent, level, node2);
+	BFSUtil(node1, level, node2);
 	return level[node2 - 1];
 }
 
 unsigned int Graph::FindDiameter()
 {
 	// O(n^2 log n)
-	int diameter = 0;
+	int diameter = -1;
 	for (unsigned int nodeId = 0; nodeId < getNodesCount(); nodeId++)
 	{
-		vector<unsigned int> parent(getNodesCount(), UINT_MAX);
 		vector<int> level(getNodesCount(), -1);
-		BreadthFirstSearch(nodeId, parent, level);
+		BFSUtil(nodeId, level, UINT_MAX);
 
 		if (level[nodeId] > diameter)
 		{
@@ -291,6 +289,35 @@ void Graph::DFSUtil(unsigned int startNodeIndex, vector<unsigned int>& parent)
 
 			parent[neighborId - 1] = startNodeIndex;
 			stk.push(neighborId);
+		}
+	}
+}
+
+void Graph::BFSUtil(unsigned int startNodeIndex, vector<int>& level, unsigned int goalIndex)
+{
+	queue<int> q;
+
+	q.push(startNodeIndex);
+	int currentLevel = 0;
+	level[startNodeIndex - 1] = 0;
+
+	while (!q.empty())
+	{
+		int nodeId = q.front();
+		q.pop();
+		if (goalIndex == nodeId)
+		{
+			return;
+		}
+
+		for each (int neighborId in GetNeighbors(nodeId))
+		{
+			if (level[neighborId - 1] != -1)
+			{
+				continue;
+			}
+			level[neighborId - 1] = level[nodeId - 1] + 1;
+			q.push(neighborId);
 		}
 	}
 }
