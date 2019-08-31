@@ -59,6 +59,11 @@ void Graph::Sort()
 
 void Graph::BreadthFirstSearch(unsigned int startNodeIndex, vector<unsigned int>& parent, vector<int>& level, unsigned int goalNodeIndex)
 {
+	if (startNodeIndex > m_NodesCount)
+	{
+		return;
+	}
+
 	queue<int> q;
 	
 	q.push(startNodeIndex);
@@ -90,6 +95,12 @@ void Graph::BreadthFirstSearch(unsigned int startNodeIndex, vector<unsigned int>
 
 void Graph::DepthFirstSearch(unsigned int startNodeIndex, vector<unsigned int> &parent, vector<int> &level, unsigned int goalNodeIndex)
 {
+	if (startNodeIndex > m_NodesCount)
+	{
+		return;
+	}
+
+
 	stack<int> stk;
 
 	stk.push(startNodeIndex);
@@ -167,6 +178,11 @@ forward_list<forward_list<int>> Graph::GetConnectedComponents()
 
 unsigned int Graph::Distance(unsigned int node1, unsigned int node2)
 {
+	if (node1 > m_NodesCount || node2 > m_NodesCount)
+	{
+		return UINT_MAX;
+	}
+
 	vector<int> level(getNodesCount(), -1);
 	BFSUtil(node1, level, node2);
 	return level[node2 - 1];
