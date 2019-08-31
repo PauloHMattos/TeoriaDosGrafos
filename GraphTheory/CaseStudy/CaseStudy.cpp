@@ -50,7 +50,7 @@ int main()
 	cout << "Numero de vertices: " << graph->getNodesCount() << "\n";
 	cout << "Numero de arestas: " << graph->getEdgesCount() << "\n";
 
-	int diameter = graph->FindDiameter(10);
+	int diameter = graph->FindDiameter();
 	cout << "FindDiameter(10): " << diameter << "\n";
 
 	//system("pause");

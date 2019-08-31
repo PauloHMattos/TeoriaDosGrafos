@@ -128,6 +128,22 @@ unsigned int Graph::Distance(unsigned int node1, unsigned int node2)
 	return level[node2 - 1];
 }
 
+unsigned int Graph::FindDiameter()
+{
+	unsigned int result = 0;
+	for (unsigned int nodeId = 1; nodeId < m_NodesCount + 1; nodeId++)
+	{
+		unsigned int diameter = FindDiameter(nodeId);
+		if (diameter > result)
+		{
+			result = diameter;
+		}
+	}
+	return result;
+}
+
+
+// TODO - Tem alguma forma de otimizar isso?
 unsigned int Graph::FindDiameter(unsigned int startNode)
 {
 	vector<unsigned int> parent(getNodesCount(), UINT_MAX);
