@@ -8,10 +8,6 @@ void ListGraph::AddNode(unsigned int index)
 
 void ListGraph::AddEdge(unsigned int node1, unsigned int node2)
 {
-	if (node1 > m_NodesCount || node2 > m_NodesCount)
-	{
-		return;
-	}
 	Graph::AddEdge(node1, node2);
 	m_LinkedList[node1 - 1].push_front(node2);
 	m_LinkedList[node2 - 1].push_front(node1);

@@ -9,25 +9,20 @@ void MatrixGraph::AddNode(unsigned int index)
 
 void MatrixGraph::AddEdge(unsigned int node1, unsigned int node2)
 {
-	if (node1 > m_NodesCount || node2 > m_NodesCount)
-	{
-		return;
-	}
 	Graph::AddEdge(node1, node2);
-
-	m_Matrix[node1 - 1][node2 - 1] = 1;
-	m_Matrix[node2 - 1][node1 - 1] = 1;
+	m_Matrix[node1 - 1][node2 - 1] = true;
+	m_Matrix[node2 - 1][node1 - 1] = true;
 }
 
 forward_list<int> MatrixGraph::GetNeighbors(unsigned int nodeIndex)
 {
 	forward_list<int> neighbors;
 	
-	for (int i = 0; i < m_NodesCount; i++)
+	for (int i = m_NodesCount - 1; i >= 0; i--)
 	{
-		if (m_Matrix[nodeIndex][i])
+		if (m_Matrix[nodeIndex - 1][i])
 		{
-			neighbors.push_front(i);
+			neighbors.push_front(i + 1);
 		}
 	}
 
@@ -38,5 +33,4 @@ void MatrixGraph::Resize(unsigned int count)
 {
 	m_NodesCount = count;
 	m_Matrix = vector<vector<bool>>(count);
-	//m_Matrix.reserve(count);
 }
