@@ -6,7 +6,7 @@
 #include <stack>
 #include <iostream>
 #include <climits>
-
+#include <omp.h>
 
 bool Graph::Load(string path)
 {
@@ -23,14 +23,14 @@ bool Graph::Load(string path)
 	unsigned int nodesCount;
 	file >> nodesCount;
 	Resize(nodesCount);
-
+	
 	nodesCount = 0;
 	while (nodesCount < getNodesCount())
 	{
 		AddNode(nodesCount);
 		nodesCount++;
 	}
-
+	
 	int node1, node2;
 	while (file >> node1 >> node2)
 	{
@@ -57,31 +57,30 @@ void Graph::Sort()
 {
 }
 
-void Graph::BreadthFirstSearch(unsigned int startNodeIndex, vector<unsigned int>& parent, vector<int>& level, unsigned int goalNodeIndex)
+void Graph::BreadthFirstSearch(unsigned int startNodeIndex, vector<unsigned int>& parent, vector<int>& level)
 {
 	if (startNodeIndex > m_NodesCount)
 	{
 		return;
 	}
 
-	queue<int> q;
+	queue<unsigned int> q;
 	
 	q.push(startNodeIndex);
-	int currentLevel = 0;
 	parent[startNodeIndex - 1] = 0;
 	level[startNodeIndex - 1] = 0;
 
 	while (!q.empty())
 	{
-		int nodeId = q.front();
+		auto nodeId = q.front();
 		q.pop();
-		if (goalNodeIndex == nodeId)
-		{
-			return;
-		}
 
-		for each (int neighborId in GetNeighbors(nodeId))
+		auto neighbors = GetNeighbors(nodeId);
+		for (unsigned int i = 0; i < neighbors.size(); i++)
+		//for (auto it = neighbors.begin(); it != neighbors.end(); ++it)
 		{
+			auto neighborId = neighbors[i]; // *it;
+		
 			if (level[neighborId - 1] != -1)
 			{
 				continue;
@@ -93,7 +92,7 @@ void Graph::BreadthFirstSearch(unsigned int startNodeIndex, vector<unsigned int>
 	}
 }
 
-void Graph::DepthFirstSearch(unsigned int startNodeIndex, vector<unsigned int> &parent, vector<int> &level, unsigned int goalNodeIndex)
+void Graph::DepthFirstSearch(unsigned int startNodeIndex, vector<unsigned int> &parent, vector<int> &level)
 {
 	if (startNodeIndex > m_NodesCount)
 	{
@@ -101,26 +100,25 @@ void Graph::DepthFirstSearch(unsigned int startNodeIndex, vector<unsigned int> &
 	}
 
 
-	stack<int> stk;
+	stack<unsigned int> stk;
 
 	stk.push(startNodeIndex);
 
-	int currentLevel = 0;
 	parent[startNodeIndex - 1] = 0;
 	level[startNodeIndex - 1] = 0;
 
 	while (!stk.empty())
 	{
-		int nodeId = stk.top();
+		auto nodeId = stk.top();
 		stk.pop();
-		if (goalNodeIndex == nodeId)
-		{
-			return;
-		}
 
+		auto neighbors = GetNeighbors(nodeId);
 		
-		for each (int neighborId in GetNeighbors(nodeId))
+		for (unsigned int i = 0; i < neighbors.size(); i++)
+			//for (auto it = neighbors.begin(); it != neighbors.end(); ++it)
 		{
+			auto neighborId = neighbors[i]; // *it;
+
 			if (level[neighborId - 1] != -1)
 			{
 				continue;
@@ -183,22 +181,6 @@ unsigned int Graph::Distance(unsigned int node1, unsigned int node2)
 	return level[node2 - 1];
 }
 
-unsigned int Graph::FindDiameter()
-{
-	// O(n^2 log n)
-	int diameter = -1;
-	for (unsigned int nodeId = 0; nodeId < getNodesCount(); nodeId++)
-	{
-		vector<int> level(getNodesCount(), -1);
-		BFSUtil(nodeId, level, UINT_MAX);
-
-		if (level[nodeId] > diameter)
-		{
-			diameter = level[nodeId];
-		}
-	}
-	return diameter;
-}
 
 unsigned int Graph::getDegree(unsigned int nodeIndex)
 {
@@ -212,26 +194,30 @@ unsigned int Graph::getDegree(unsigned int nodeIndex)
 unsigned int Graph::getMinDegree()
 {
 	unsigned int result = UINT_MAX;
-	for each (unsigned int degree in m_Degrees)
+	
+	for (unsigned int degree : m_Degrees)
 	{
 		if (degree < result)
 		{
 			result = degree;
 		}
 	}
+	
 	return result;
 }
 
 unsigned int Graph::getMaxDegree()
 {
 	unsigned int result = 0;
-	for each (unsigned int degree in m_Degrees)
+	
+	for (unsigned int degree : m_Degrees)
 	{
 		if (degree > result)
 		{
 			result = degree;
 		}
 	}
+	
 	return result;
 }
 
@@ -241,7 +227,7 @@ float Graph::getMeanDegree()
 	{
 		return 0;
 	}
-	return m_EdgesCount / m_NodesCount;
+	return (float)m_EdgesCount / (float)m_NodesCount;
 }
 
 unsigned int Graph::getMedianDegree()
@@ -256,7 +242,7 @@ unsigned int Graph::getMedianDegree()
 	{
 		// Cria uma cópia para não alterar o vetor original
 		vector<unsigned int> degrees(m_Degrees);
-		sort(degrees.begin(), degrees.end());
+		//sort(degrees.begin(), degrees.end());
 
 		if (size % 2 == 0)
 		{
@@ -279,20 +265,23 @@ void Graph::Resize(unsigned int count)
 
 void Graph::DFSUtil(unsigned int startNodeIndex, vector<unsigned int>& parent)
 {
-	stack<int> stk;
+	stack<unsigned int> stk;
 
 	stk.push(startNodeIndex);
 
-	int currentLevel = 0;
 	parent[startNodeIndex - 1] = 0;
 
 	while (!stk.empty())
 	{
-		int nodeId = stk.top();
+		unsigned int nodeId = stk.top();
 		stk.pop();
-
-		for each (int neighborId in GetNeighbors(nodeId))
+		
+		auto neighbors = GetNeighbors(nodeId);
+		for (unsigned int i = 0; i < neighbors.size(); i++)
+			//for (auto it = neighbors.begin(); it != neighbors.end(); ++it)
 		{
+			auto neighborId = neighbors[i]; // *it;
+
 			if (parent[neighborId - 1] != UINT_MAX)
 			{
 				continue;
@@ -304,31 +293,113 @@ void Graph::DFSUtil(unsigned int startNodeIndex, vector<unsigned int>& parent)
 	}
 }
 
-void Graph::BFSUtil(unsigned int startNodeIndex, vector<int>& level, unsigned int goalIndex)
+unsigned int Graph::BFSUtil(unsigned int startNodeIndex, vector<int>& level, unsigned int goalIndex)
 {
-	queue<int> q;
+	unsigned int diameter = 0;
+	queue<unsigned int> q;
 
 	q.push(startNodeIndex);
-	int currentLevel = 0;
 	level[startNodeIndex - 1] = 0;
 
 	while (!q.empty())
 	{
-		int nodeId = q.front();
+		unsigned int nodeId = q.front();
 		q.pop();
 		if (goalIndex == nodeId)
 		{
-			return;
+			return diameter;
 		}
-
-		for each (int neighborId in GetNeighbors(nodeId))
+		
+		auto neighbors = GetNeighbors(nodeId);
+		for (unsigned int i = 0; i < neighbors.size(); i++)
+			//for (auto it = neighbors.begin(); it != neighbors.end(); ++it)
 		{
+			auto neighborId = neighbors[i]; // *it;
+
 			if (level[neighborId - 1] != -1)
 			{
 				continue;
 			}
+
+
 			level[neighborId - 1] = level[nodeId - 1] + 1;
+			if ((unsigned int)level[neighborId - 1] > diameter)
+			{
+				diameter = level[neighborId - 1];
+			}
 			q.push(neighborId);
 		}
 	}
+	return diameter;
 }
+
+unsigned int Graph::FindDiameter()
+{
+	unsigned int diameter = 0;
+#pragma omp parallel for shared(diameter)
+	for (unsigned int nodeId = 1; nodeId < getNodesCount() + 1; nodeId++)
+	{
+		vector<int> level(getNodesCount(), -1);
+		auto d = BFSUtil(nodeId, level, UINT_MAX);
+		if (d > diameter)
+		{
+			diameter = d;
+		}
+	}
+	return diameter;
+}
+/*
+unsigned int Graph::FindDiameter()
+{
+	// O(n^2)
+	unsigned int diameter = 0;
+	
+	for (unsigned int node1 = 1; node1 < getNodesCount() + 1; node1++)
+	{
+		for (unsigned int node2 = 1; node2 < getNodesCount() + 1; node2++)
+		{
+			auto d = Distance(node1, node2);
+			if (d > diameter)
+			{
+				diameter = d;
+			}
+		}
+	}
+	return diameter;
+}
+*/
+/*
+unsigned int Graph::FindDiameter()
+{
+	// O(n^2)
+	unsigned int diameter = 0;
+	for (unsigned int nodeId = 1; nodeId < getNodesCount() + 1; nodeId++)
+	{
+		vector<int> level(getNodesCount(), -1);
+		queue<unsigned int> q;
+		q.push(nodeId);
+
+		while (!q.empty())
+		{
+			auto nId = q.front();
+			q.pop();
+
+			for each (int neighborId in GetNeighbors(nId))
+			{
+				if (level[neighborId - 1] != -1)
+				{
+					continue;
+				}
+
+				level[neighborId - 1] = level[nId - 1] + 1;
+				if (level[neighborId - 1] > diameter)
+				{
+					diameter = level[neighborId - 1];
+				}
+				q.push(neighborId);
+			}
+		}
+	}
+	return diameter;
+}
+*/

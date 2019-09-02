@@ -3,7 +3,7 @@
 #include <vector>
 #include <forward_list>
 
-class GRAPHLIBRARY_API ListGraph :
+class DLL_EXPORT_OR_IMPORT ListGraph :
 	public Graph
 {
 public:
@@ -11,12 +11,12 @@ public:
 	void AddEdge(unsigned int node1, unsigned int node2) override;
 	void Sort() override;
 
-	forward_list<unsigned int> GetNeighbors(unsigned int nodeIndex) override;
+	vector<unsigned int> GetNeighbors(unsigned int nodeIndex) override;
 
 protected:
 	void Resize(unsigned int count) override;
 
 private:
-	vector<forward_list<unsigned int>> m_LinkedList;
+	vector<vector<unsigned int>> m_LinkedList;
 };
 

@@ -3,17 +3,23 @@
 #include <string>
 #include <forward_list>
 #include <list>
+#include <limits>
 #include <vector>
+#include "Timing.h"
 
-#ifdef GRAPHLIBRARY_EXPORTS
-#define GRAPHLIBRARY_API __declspec(dllexport)
+#ifndef UINT_MAX
+#define UINT_MAX 0xffffffff
+#endif
+
+#ifdef BUILDING_DLL
+#define DLL_EXPORT_OR_IMPORT __declspec(dllexport)
 #else
-#define GRAPHLIBRARY_API __declspec(dllimport)
+#define DLL_EXPORT_OR_IMPORT __declspec(dllimport)
 #endif
 
 using namespace std;
 
-class GRAPHLIBRARY_API Graph
+class DLL_EXPORT_OR_IMPORT Graph
 {
 public:
 	bool Load(string path);
@@ -21,8 +27,8 @@ public:
 	virtual void AddEdge(unsigned int node1, unsigned int node2);
 	virtual void Sort();
 
-	void BreadthFirstSearch(unsigned int startNodeIndex, vector<unsigned int>& parent, vector<int>& level, unsigned int goalNodeIndex = UINT_MAX);
-	void DepthFirstSearch(unsigned int startNodeIndex, vector<unsigned int>& parent, vector<int>& level, unsigned int goalNodeIndex = UINT_MAX);
+	void BreadthFirstSearch(unsigned int startNodeIndex, vector<unsigned int>& parent, vector<int>& level);
+	void DepthFirstSearch(unsigned int startNodeIndex, vector<unsigned int>& parent, vector<int>& level);
 
 	unsigned int Distance(unsigned int node1, unsigned int node2);
 	unsigned int FindDiameter();
@@ -31,7 +37,7 @@ public:
 	list<list<unsigned int>> GetConnectedComponents();
 
 
-	virtual forward_list<unsigned int> GetNeighbors(unsigned int nodeIndex) = 0;
+	virtual vector<unsigned int> GetNeighbors(unsigned int nodeIndex) = 0;
 
 
 	unsigned int getNodesCount() { return m_NodesCount; }
@@ -47,25 +53,10 @@ public:
 protected:
 	virtual void Resize(unsigned int count);
 	void DFSUtil(unsigned int startNodeIndex, vector<unsigned int>& parent);
-	void BFSUtil(unsigned int startNodeIndex, vector<int>& level, unsigned int goalIndex);
-
-
+	unsigned int BFSUtil(unsigned int startNodeIndex, vector<int>& level, unsigned int goalIndex);
+	
 	vector<unsigned int> m_Degrees;
 
 	unsigned int m_NodesCount = 0;
 	unsigned int m_EdgesCount = 0;
 };
-
-
-#define INIT_TIMER auto start = std::chrono::high_resolution_clock::now()
-#define START_TIMER  start = std::chrono::high_resolution_clock::now()
-
-#define STOP_TIMER(name)  std::cout << "RUNTIME of " << name << ": " << \
-    std::chrono::duration_cast<std::chrono::milliseconds>( \
-            (std::chrono::high_resolution_clock::now()-start) \
-    ).count() << " ms " << std::endl
-
-#define STOP_TIMER_I(name, d)  std::cout << "RUNTIME of " << name << ": " << \
-    std::chrono::duration_cast<std::chrono::milliseconds>( \
-            (std::chrono::high_resolution_clock::now()-start) / d \
-    ).count() << " ms " << std::endl

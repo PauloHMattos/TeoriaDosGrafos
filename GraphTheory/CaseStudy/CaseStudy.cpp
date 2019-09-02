@@ -40,23 +40,26 @@ int main()
 	//cin >> path;
 
 	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\as_graph.txt"))
-	if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\live_journal.txt"))
-	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\dblp.txt"))
-	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\graph_1.txt"))
+	if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\dblp.txt"))
+	//if (!graph->Load("C:\\Users\\Paulo\\Documents\\GitHub\\TeoriaDosGrafos\\GraphTheory\\x64\\Debug\\live_journal.txt"))
 	{
 		cout << "Arquivo não encontrado";
 		system("pause");
 		return 0;
 	}
-
-	cout << "Numero de vertices: " << graph->getNodesCount() << "\n";
-	cout << "Numero de arestas: " << graph->getEdgesCount() << "\n";
-
+	//*
+	cout << "Grau minimo: " << graph->getMinDegree() << "\n";
+	cout << "Grau máximo: " << graph->getMaxDegree() << "\n";
+	cout << "Grau médio: " << graph->getMeanDegree() << "\n";
+	cout << "Mediana do grau: " << graph->getMedianDegree() << "\n";
+	//*/
+	/*
 	START_TIMER;
 	list<list<unsigned int>> components = graph->GetConnectedComponents();
 	STOP_TIMER_I("GetConnectedComponents", 1);
 
 	cout << "Numero de componentes: " << components.size() << "\n";
+	/*
 	for (list<unsigned int> component : components)
 	{
 		cout << "Size: " << component.size() << "\n";
@@ -67,17 +70,110 @@ int main()
 		cout << "\n";
 		cout << "\n";
 	}
+	*/
+	//*/
 
-	//cout << "FindDiameter(10): " << diameter << "\n";
-
-	//system("pause");
-	//*
-	unsigned int dist = graph->Distance(1, 6);
+	/*
+	unsigned int dist = graph->Distance(10, 20);
 	cout << "Distancia (10, 20): " << dist << "\n";
 	dist = graph->Distance(10, 30);
 	cout << "Distancia (10, 30): " << dist << "\n";
 	dist = graph->Distance(20, 30);
 	cout << "Distancia (20, 30): " << dist << "\n";
+	//*/
+
+	/*
+	START_TIMER;
+	auto diameter = graph->FindDiameter();
+	STOP_TIMER_I("FindDiameter", 1);
+	cout << "FindDiameter(): " << diameter << "\n";
+	return 0;
+	//*/
+	//*
+	int goal = 10;
+	vector<unsigned int> parent(graph->getNodesCount(), UINT_MAX);
+	vector<int> level(graph->getNodesCount(), -1);
+	graph->BreadthFirstSearch(1, parent, level);
+	cout << "Parent(" << goal << "): " << parent[goal] << "\n";
+	parent = vector<unsigned int>(graph->getNodesCount(), UINT_MAX);
+	level = vector<int>(graph->getNodesCount(), -1);
+	graph->BreadthFirstSearch(2, parent, level);
+	cout << "Parent(" << goal << "): " << parent[goal] << "\n";
+	parent = vector<unsigned int>(graph->getNodesCount(), UINT_MAX);
+	level = vector<int>(graph->getNodesCount(), -1);
+	graph->BreadthFirstSearch(3, parent, level);
+	cout << "Parent(" << goal << "): " << parent[goal] << "\n";
+
+	goal = 20;
+	parent = vector<unsigned int>(graph->getNodesCount(), UINT_MAX);
+	level = vector<int>(graph->getNodesCount(), -1);
+	graph->BreadthFirstSearch(1, parent, level);
+	cout << "Parent(" << goal << "): " << parent[goal] << "\n";
+	parent = vector<unsigned int>(graph->getNodesCount(), UINT_MAX);
+	level = vector<int>(graph->getNodesCount(), -1);
+	graph->BreadthFirstSearch(2, parent, level);
+	cout << "Parent(" << goal << "): " << parent[goal] << "\n";
+	parent = vector<unsigned int>(graph->getNodesCount(), UINT_MAX);
+	level = vector<int>(graph->getNodesCount(), -1);
+	graph->BreadthFirstSearch(3, parent, level);
+	cout << "Parent(" << goal << "): " << parent[goal] << "\n";
+
+	goal = 30;
+	parent = vector<unsigned int>(graph->getNodesCount(), UINT_MAX);
+	level = vector<int>(graph->getNodesCount(), -1);
+	graph->BreadthFirstSearch(1, parent, level);
+	cout << "Parent(" << goal << "): " << parent[goal] << "\n";
+	level = vector<int>(graph->getNodesCount(), -1);
+	graph->BreadthFirstSearch(2, parent, level);
+	cout << "Parent(" << goal << "): " << parent[goal] << "\n";
+	parent = vector<unsigned int>(graph->getNodesCount(), UINT_MAX);
+	level = vector<int>(graph->getNodesCount(), -1);
+	graph->BreadthFirstSearch(3, parent, level);
+	cout << "Parent(" << goal << "): " << parent[goal] << "\n";
+	//return 0;
+	//*/
+
+
+	goal = 10;
+	parent = vector<unsigned int>(graph->getNodesCount(), UINT_MAX);
+	level = vector<int>(graph->getNodesCount(), -1);
+	graph->DepthFirstSearch(1, parent, level);
+	cout << "Parent(" << goal << "): " << parent[goal] << "\n";
+	parent = vector<unsigned int>(graph->getNodesCount(), UINT_MAX);
+	level = vector<int>(graph->getNodesCount(), -1);
+	graph->DepthFirstSearch(2, parent, level);
+	cout << "Parent(" << goal << "): " << parent[goal] << "\n";
+	parent = vector<unsigned int>(graph->getNodesCount(), UINT_MAX);
+	level = vector<int>(graph->getNodesCount(), -1);
+	graph->DepthFirstSearch(3, parent, level);
+	cout << "Parent(" << goal << "): " << parent[goal] << "\n";
+
+	goal = 20;
+	parent = vector<unsigned int>(graph->getNodesCount(), UINT_MAX);
+	level = vector<int>(graph->getNodesCount(), -1);
+	graph->DepthFirstSearch(1, parent, level);
+	cout << "Parent(" << goal << "): " << parent[goal] << "\n";
+	parent = vector<unsigned int>(graph->getNodesCount(), UINT_MAX);
+	level = vector<int>(graph->getNodesCount(), -1);
+	graph->DepthFirstSearch(2, parent, level);
+	cout << "Parent(" << goal << "): " << parent[goal] << "\n";
+	parent = vector<unsigned int>(graph->getNodesCount(), UINT_MAX);
+	level = vector<int>(graph->getNodesCount(), -1);
+	graph->DepthFirstSearch(3, parent, level);
+	cout << "Parent(" << goal << "): " << parent[goal] << "\n";
+
+	goal = 30;
+	parent = vector<unsigned int>(graph->getNodesCount(), UINT_MAX);
+	level = vector<int>(graph->getNodesCount(), -1);
+	graph->DepthFirstSearch(1, parent, level);
+	cout << "Parent(" << goal << "): " << parent[goal] << "\n";
+	level = vector<int>(graph->getNodesCount(), -1);
+	graph->DepthFirstSearch(2, parent, level);
+	cout << "Parent(" << goal << "): " << parent[goal] << "\n";
+	parent = vector<unsigned int>(graph->getNodesCount(), UINT_MAX);
+	level = vector<int>(graph->getNodesCount(), -1);
+	graph->DepthFirstSearch(3, parent, level);
+	cout << "Parent(" << goal << "): " << parent[goal] << "\n";
 	return 0;
 	//*/
 

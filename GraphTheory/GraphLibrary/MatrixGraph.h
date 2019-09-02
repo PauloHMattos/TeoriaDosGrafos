@@ -2,13 +2,13 @@
 #include "Graph.h"
 #include <vector>
 
-class GRAPHLIBRARY_API MatrixGraph :
+class DLL_EXPORT_OR_IMPORT MatrixGraph :
 	public Graph
 {
 public:
 	void AddNode(unsigned int index) override;
 	void AddEdge(unsigned int node1, unsigned int node2) override;
-	forward_list<unsigned int> GetNeighbors(unsigned int nodeIndex) override;
+	vector<unsigned int> GetNeighbors(unsigned int nodeIndex) override;
 
 protected:
 	void Resize(unsigned int count) override;
