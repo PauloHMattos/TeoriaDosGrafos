@@ -8,7 +8,7 @@ class DLL_EXPORT_OR_IMPORT MatrixGraph :
 public:
 	void AddNode(unsigned int index) override;
 	void AddEdge(unsigned int node1, unsigned int node2) override;
-	vector<unsigned int> GetNeighbors(unsigned int nodeIndex) override;
+	unsigned int GetNeighbor(unsigned int nodeIndex, unsigned int neighborId) override;
 
 protected:
 	void Resize(unsigned int count) override;

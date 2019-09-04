@@ -30,9 +30,6 @@
     <ClInclude Include="MatrixGraph.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="GraphLibrary.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
     <ClInclude Include="Timing.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
@@ -51,9 +48,6 @@
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="MatrixGraph.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphLibrary.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="CaseStudy.cpp">

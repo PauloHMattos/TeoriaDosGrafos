@@ -7,6 +7,7 @@
 #include <iostream>
 #include <climits>
 #include <omp.h>
+#include <iterator>
 
 bool Graph::Load(string path)
 {
@@ -75,13 +76,11 @@ void Graph::BreadthFirstSearch(unsigned int startNodeIndex, vector<unsigned int>
 		auto nodeId = q.front();
 		q.pop();
 
-		auto neighbors = GetNeighbors(nodeId);
-		for (unsigned int i = 0; i < neighbors.size(); i++)
-		//for (auto it = neighbors.begin(); it != neighbors.end(); ++it)
+		for (unsigned int i = 0; i < m_Degrees[nodeId - 1]; i++)
 		{
-			auto neighborId = neighbors[i]; // *it;
+			auto neighborId = GetNeighbor(nodeId, i);
 		
-			if (level[neighborId - 1] != -1)
+			if (parent[neighborId - 1] != UINT_MAX)
 			{
 				continue;
 			}
@@ -99,10 +98,11 @@ void Graph::DepthFirstSearch(unsigned int startNodeIndex, vector<unsigned int> &
 		return;
 	}
 
-
+	vector<bool> mark = vector<bool>(getNodesCount(), false);
 	stack<unsigned int> stk;
 
 	stk.push(startNodeIndex);
+
 
 	parent[startNodeIndex - 1] = 0;
 	level[startNodeIndex - 1] = 0;
@@ -112,20 +112,20 @@ void Graph::DepthFirstSearch(unsigned int startNodeIndex, vector<unsigned int> &
 		auto nodeId = stk.top();
 		stk.pop();
 
-		auto neighbors = GetNeighbors(nodeId);
-		
-		for (unsigned int i = 0; i < neighbors.size(); i++)
-			//for (auto it = neighbors.begin(); it != neighbors.end(); ++it)
+		if (mark[nodeId - 1])
 		{
-			auto neighborId = neighbors[i]; // *it;
+			continue;
+		}
 
-			if (level[neighborId - 1] != -1)
+		mark[nodeId - 1] = true;
+		for (unsigned int i = 0; i < m_Degrees[nodeId - 1]; i++)
+		{
+			auto neighborId = GetNeighbor(nodeId, i);
+			if (parent[neighborId - 1] == UINT_MAX)
 			{
-				continue;
+				parent[neighborId - 1] = nodeId;
+				level[neighborId - 1] = level[nodeId - 1] + 1;
 			}
-
-			parent[neighborId - 1] = nodeId;
-			level[neighborId - 1] = level[nodeId - 1] + 1;
 			stk.push(neighborId);
 		}
 	}
@@ -276,11 +276,9 @@ void Graph::DFSUtil(unsigned int startNodeIndex, vector<unsigned int>& parent)
 		unsigned int nodeId = stk.top();
 		stk.pop();
 		
-		auto neighbors = GetNeighbors(nodeId);
-		for (unsigned int i = 0; i < neighbors.size(); i++)
-			//for (auto it = neighbors.begin(); it != neighbors.end(); ++it)
+		for (unsigned int i = 0; i < m_Degrees[nodeId - 1]; i++)
 		{
-			auto neighborId = neighbors[i]; // *it;
+			auto neighborId = GetNeighbor(nodeId, i);
 
 			if (parent[neighborId - 1] != UINT_MAX)
 			{
@@ -310,11 +308,9 @@ unsigned int Graph::BFSUtil(unsigned int startNodeIndex, vector<int>& level, uns
 			return diameter;
 		}
 		
-		auto neighbors = GetNeighbors(nodeId);
-		for (unsigned int i = 0; i < neighbors.size(); i++)
-			//for (auto it = neighbors.begin(); it != neighbors.end(); ++it)
+		for (unsigned int i = 0; i < m_Degrees[nodeId - 1]; i++)
 		{
-			auto neighborId = neighbors[i]; // *it;
+			auto neighborId = GetNeighbor(nodeId, i);
 
 			if (level[neighborId - 1] != -1)
 			{
@@ -333,12 +329,17 @@ unsigned int Graph::BFSUtil(unsigned int startNodeIndex, vector<int>& level, uns
 	return diameter;
 }
 
-unsigned int Graph::FindDiameter()
+unsigned int Graph::FindDiameter(list<list<unsigned int>> components)
 {
 	unsigned int diameter = 0;
-#pragma omp parallel for shared(diameter)
-	for (unsigned int nodeId = 1; nodeId < getNodesCount() + 1; nodeId++)
+
+	list<unsigned int> largestComponent = *components.end();
+	list<unsigned int>::iterator it;
+
+//#pragma omp parallel for shared(diameter)
+	for (it = largestComponent.begin(); it != largestComponent.end(); ++it)
 	{
+		auto nodeId = *it;
 		vector<int> level(getNodesCount(), -1);
 		auto d = BFSUtil(nodeId, level, UINT_MAX);
 		if (d > diameter)

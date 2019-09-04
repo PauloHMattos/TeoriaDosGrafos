@@ -11,7 +11,7 @@ public:
 	void AddEdge(unsigned int node1, unsigned int node2) override;
 	void Sort() override;
 
-	vector<unsigned int> GetNeighbors(unsigned int nodeIndex) override;
+	unsigned int GetNeighbor(unsigned int nodeIndex, unsigned int neighborId) override;
 
 protected:
 	void Resize(unsigned int count) override;

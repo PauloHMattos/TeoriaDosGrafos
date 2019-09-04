@@ -386,3 +386,6 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/c++,visualstudio
+/GraphTheory/GraphLibrary/live_journal.txt
+/GraphTheory/GraphLibrary/dblp.txt
+/GraphTheory/GraphLibrary/as_graph.txt

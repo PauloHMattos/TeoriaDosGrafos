@@ -6,6 +6,7 @@
 #include <limits>
 #include <vector>
 #include "Timing.h"
+#include <iterator>
 
 #ifndef UINT_MAX
 #define UINT_MAX 0xffffffff
@@ -31,13 +32,13 @@ public:
 	void DepthFirstSearch(unsigned int startNodeIndex, vector<unsigned int>& parent, vector<int>& level);
 
 	unsigned int Distance(unsigned int node1, unsigned int node2);
-	unsigned int FindDiameter();
+	unsigned int FindDiameter(list<list<unsigned int>> components);
 
 
 	list<list<unsigned int>> GetConnectedComponents();
 
 
-	virtual vector<unsigned int> GetNeighbors(unsigned int nodeIndex) = 0;
+	virtual unsigned int GetNeighbor(unsigned int nodeIndex, unsigned int neighborId) = 0;
 
 
 	unsigned int getNodesCount() { return m_NodesCount; }

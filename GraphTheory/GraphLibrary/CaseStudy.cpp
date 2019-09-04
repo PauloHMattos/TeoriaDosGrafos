@@ -8,7 +8,7 @@
 #include "MatrixGraph.h"
 
 
-void connectedComponents(Graph* graph)
+list<list<unsigned int>> connectedComponents(Graph* graph)
 {
 	INIT_TIMER;
 	START_TIMER;
@@ -21,13 +21,16 @@ void connectedComponents(Graph* graph)
 	cout << "Tamanho da maior componentes " << components.back().size() << "\n";
 	cout << "Tamanho da menor componentes " << components.front().size() << "\n";
 	cout << "\n";
+
+	return components;
 }
 
-void diameter(Graph* graph)
+void diameter(Graph* graph, list<list<unsigned int>> components)
 {
 	INIT_TIMER;
 	START_TIMER;
-	auto diameter = graph->FindDiameter();
+	
+	auto diameter = graph->FindDiameter(components);
 	STOP_TIMER_I("FindDiameter", 1);
 
 	cout << "Diametro do grafo(): " << diameter << "\n";
@@ -61,7 +64,7 @@ void findParentBFS(Graph* graph, unsigned int goal)
 		vector<unsigned int> parent(graph->getNodesCount(), UINT_MAX);
 		vector<int> level(graph->getNodesCount(), -1);
 		graph->BreadthFirstSearch(i, parent, level);
-		cout << "Parent(BFS, " << i << ", " << goal << "): " << parent[goal] << "\n";
+		cout << "Parent(BFS, " << i << ", " << goal << "): " << parent[goal - 1] << "\n";
 	}
 	cout << "\n";
 }
@@ -73,7 +76,7 @@ void findParentDFS(Graph* graph, unsigned int goal)
 		vector<unsigned int> parent(graph->getNodesCount(), UINT_MAX);
 		vector<int> level(graph->getNodesCount(), -1);
 		graph->DepthFirstSearch(i, parent, level);
-		cout << "Parent(DFS, " << i << ", " << goal << "): " << parent[goal] << "\n";
+		cout << "Parent(DFS, " << i << ", " << goal << "): " << parent[goal - 1] << "\n";
 	}
 	cout << "\n";
 }
@@ -184,17 +187,17 @@ int main()
 		system("pause");
 		return 0;
 	}
-	/*
-	system("pause");
 
+	findParent(graph);
+	/*
 	stats(graph);
 	connectedComponents(graph);
 	distance(graph);
-	findParent(graph);
 	timingBFS(graph, 1000);
 	timingDFS(graph, 1000);
+	auto components = connectedComponents(graph);
+	diameter(graph, components);
 	*/
-	diameter(graph);
 
 	system("pause");
 	return 0;

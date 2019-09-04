@@ -16,16 +16,16 @@ void ListGraph::AddEdge(unsigned int node1, unsigned int node2)
 
 void ListGraph::Sort()
 {
-#pragma omp parallel for
+//#pragma omp parallel for
 	for (unsigned int i = 0; i < m_NodesCount; i++)
 	{
 		sort(m_LinkedList[i].begin(), m_LinkedList[i].end());
 	}
 }
 
-vector<unsigned int> ListGraph::GetNeighbors(unsigned int nodeIndex)
+unsigned int ListGraph::GetNeighbor(unsigned int nodeIndex, unsigned int neighborId)
 {
-	return m_LinkedList[nodeIndex - 1];
+	return m_LinkedList[nodeIndex - 1][neighborId];
 }
 
 void ListGraph::Resize(unsigned int count)

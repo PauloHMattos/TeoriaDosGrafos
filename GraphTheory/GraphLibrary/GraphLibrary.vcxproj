@@ -172,7 +172,6 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="Graph.h" />
-    <ClInclude Include="GraphLibrary.h" />
     <ClInclude Include="ListGraph.h" />
     <ClInclude Include="MatrixGraph.h" />
     <ClInclude Include="pch.h" />
@@ -182,7 +181,6 @@
     <ClCompile Include="CaseStudy.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Graph.cpp" />
-    <ClCompile Include="GraphLibrary.cpp" />
     <ClCompile Include="ListGraph.cpp" />
     <ClCompile Include="MatrixGraph.cpp" />
     <ClCompile Include="pch.cpp">

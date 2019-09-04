@@ -13,28 +13,19 @@ void MatrixGraph::AddEdge(unsigned int node1, unsigned int node2)
 	m_Matrix[node2 - 1][node1 - 1] = true;
 }
 
-vector<unsigned int> MatrixGraph::GetNeighbors(unsigned int nodeIndex)
+unsigned int MatrixGraph::GetNeighbor(unsigned int nodeIndex, unsigned int neighborId)
 {
-	vector<unsigned int> neighbors(m_Degrees[nodeIndex - 1]);
-	//*
-	for (unsigned int i = 0; i < m_NodesCount; i++)
+	int cnt = neighborId;
+	unsigned int i = 0;
+	while(cnt >= 0 && i < m_NodesCount)
 	{
 		if (m_Matrix[nodeIndex - 1][i])
 		{
-			neighbors.push_back(i + 1);
+			cnt -= 1;
 		}
+		i++;
 	}
-	//*/
-	/*
-	for (unsigned int i = m_NodesCount; i >= 1; i--)
-	{
-		if (m_Matrix[nodeIndex - 1][i - 1])
-		{
-			neighbors.push_front(i);
-		}
-	}
-	//*/
-	return neighbors;
+	return i;
 }
 
 void MatrixGraph::Resize(unsigned int count)
