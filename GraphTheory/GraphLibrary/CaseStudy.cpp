@@ -186,6 +186,7 @@ int main()
 		return 0;
 	}
 
+	system("pause");
 	//findParent(graph);
 	//distance(graph);
 

@@ -8,6 +8,8 @@
 #include <climits>
 #include <omp.h>
 #include <iterator>
+#include <random>
+#include <algorithm>
 
 bool Graph::Load(string path)
 {
@@ -332,10 +334,19 @@ unsigned int Graph::BFSUtil(unsigned int startNodeIndex, vector<int>& level, uns
 unsigned int Graph::FindDiameter()
 {
 	unsigned int diameter = 0;
+	auto order = vector<unsigned int>(getNodesCount());
+	for (unsigned int i = 0; i < getNodesCount(); i++)
+	{
+		order[i] = i;
+	}
+	auto rng = default_random_engine{};
+	shuffle(order.begin(), order.end(), rng);
+
 	INIT_TIMER;
 #pragma omp parallel for shared(diameter)
-	for (unsigned int nodeId = 1; nodeId <= getNodesCount(); nodeId++)
+	for (unsigned int i = 0; i < getNodesCount(); i++)
 	{
+		auto nodeId = order[i] = 1;
 		vector<int> level(getNodesCount(), -1);
 		auto d = BFSUtil(nodeId, level, UINT_MAX);
 		if (d > diameter)
