@@ -1,0 +1,9 @@
+Grau minimo: 1
+Grau maximo: 2161
+Grau medio: 1.44582
+Mediana do grau: 1
+
+Numero de componentes: 1
+Tamanho da maior componentes 32385
+Tamanho da menor componentes 32385
+

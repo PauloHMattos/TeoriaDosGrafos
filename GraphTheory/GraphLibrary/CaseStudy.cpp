@@ -2,13 +2,14 @@
 //
 
 #include <iostream>
+#include <fstream>
 #include <chrono>
 #include "Graph.h"
 #include "ListGraph.h"
 #include "MatrixGraph.h"
 
 
-list<list<unsigned int>> connectedComponents(Graph* graph)
+list<list<unsigned int>> connectedComponents(ostream* stream, Graph* graph)
 {
 	INIT_TIMER;
 	START_TIMER;
@@ -17,20 +18,20 @@ list<list<unsigned int>> connectedComponents(Graph* graph)
 
 	components.sort();
 
-	cout << "Numero de componentes: " << components.size() << "\n";
-	cout << "Tamanho da maior componentes " << components.back().size() << "\n";
-	cout << "Tamanho da menor componentes " << components.front().size() << "\n";
-	cout << "\n";
+	*stream << "Numero de componentes: " << components.size() << "\n";
+	*stream << "Tamanho da maior componentes " << components.back().size() << "\n";
+	*stream << "Tamanho da menor componentes " << components.front().size() << "\n";
+	*stream << "\n";
 
 	return components;
 }
 
-void diameter(Graph* graph, list<list<unsigned int>> components)
+void diameter(Graph* graph)
 {
 	INIT_TIMER;
 	START_TIMER;
 	
-	auto diameter = graph->FindDiameter(components);
+	auto diameter = graph->FindDiameter();
 	STOP_TIMER_I("FindDiameter", 1);
 
 	cout << "Diametro do grafo(): " << diameter << "\n";
@@ -48,13 +49,14 @@ void distance(Graph* graph)
 	cout << "\n";
 }
 
-void stats(Graph* graph)
+void stats(ostream* stream, Graph* graph)
 {
-	cout << "Grau minimo: " << graph->getMinDegree() << "\n";
-	cout << "Grau maximo: " << graph->getMaxDegree() << "\n";
-	cout << "Grau medio: " << graph->getMeanDegree() << "\n";
-	cout << "Mediana do grau: " << graph->getMedianDegree() << "\n";
-	cout << "\n";
+	*stream << "Grau minimo: " << graph->getMinDegree() << "\n";
+	*stream << "Grau maximo: " << graph->getMaxDegree() << "\n";
+	*stream << "Grau medio: " << graph->getMeanDegree() << "\n";
+	*stream << "Mediana do grau: " << graph->getMedianDegree() << "\n";
+	*stream << "\n";
+	connectedComponents(stream, graph);
 }
 
 void findParentBFS(Graph* graph, unsigned int goal)
@@ -116,8 +118,6 @@ void timingBFS(Graph* graph, int iterations)
 #pragma omp parallel for
 	for (int i = 0; i < iterations; i++)
 	{
-		cout << i << "/" << iterations;
-
 		unsigned int startNode = RandU(1, graph->getNodesCount());
 		vector<unsigned int> parent(graph->getNodesCount(), UINT_MAX);
 		vector<int> level(graph->getNodesCount(), -1);
@@ -139,8 +139,6 @@ void timingDFS(Graph* graph, int iterations)
 #pragma omp parallel for
 	for (int i = 0; i < iterations; i++)
 	{
-		cout << i << "/" << iterations;
-
 		unsigned int startNode = RandU(1, graph->getNodesCount());
 		vector<unsigned int> parent(graph->getNodesCount(), UINT_MAX);
 		vector<int> level(graph->getNodesCount(), -1);
@@ -188,15 +186,17 @@ int main()
 		return 0;
 	}
 
-	findParent(graph);
+	//findParent(graph);
+	//distance(graph);
+
+	//ofstream outputFile("output_" + path);
+	//stats(&outputFile, graph);
+	//timingBFS(graph, 1000);
+	//timingDFS(graph, 1000);
+	diameter(graph);
 	/*
-	stats(graph);
 	connectedComponents(graph);
-	distance(graph);
-	timingBFS(graph, 1000);
-	timingDFS(graph, 1000);
 	auto components = connectedComponents(graph);
-	diameter(graph, components);
 	*/
 
 	system("pause");

@@ -329,22 +329,21 @@ unsigned int Graph::BFSUtil(unsigned int startNodeIndex, vector<int>& level, uns
 	return diameter;
 }
 
-unsigned int Graph::FindDiameter(list<list<unsigned int>> components)
+unsigned int Graph::FindDiameter()
 {
 	unsigned int diameter = 0;
-
-	list<unsigned int> largestComponent = *components.end();
-	list<unsigned int>::iterator it;
-
-//#pragma omp parallel for shared(diameter)
-	for (it = largestComponent.begin(); it != largestComponent.end(); ++it)
+	INIT_TIMER;
+#pragma omp parallel for shared(diameter)
+	for (unsigned int nodeId = 1; nodeId <= getNodesCount(); nodeId++)
 	{
-		auto nodeId = *it;
 		vector<int> level(getNodesCount(), -1);
 		auto d = BFSUtil(nodeId, level, UINT_MAX);
 		if (d > diameter)
 		{
 			diameter = d;
+			cout << diameter;
+			STOP_TIMER_I("Diameter", 1);
+			cout << "\n";
 		}
 	}
 	return diameter;

@@ -32,7 +32,7 @@ public:
 	void DepthFirstSearch(unsigned int startNodeIndex, vector<unsigned int>& parent, vector<int>& level);
 
 	unsigned int Distance(unsigned int node1, unsigned int node2);
-	unsigned int FindDiameter(list<list<unsigned int>> components);
+	unsigned int FindDiameter();
 
 
 	list<list<unsigned int>> GetConnectedComponents();
