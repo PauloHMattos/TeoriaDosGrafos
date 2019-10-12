@@ -172,7 +172,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CaseStudy.cpp" />
+    <ClCompile Include="CaseStudy1.cpp" />
+    <ClCompile Include="CaseStudy2.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CaseStudy.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -31,6 +31,5 @@ unsigned int MatrixGraph::GetNeighbor(unsigned int nodeIndex, unsigned int neigh
 void MatrixGraph::Resize(unsigned int count)
 {
 	Graph::Resize(count);
-	m_NodesCount = count;
 	m_Matrix = vector<vector<bool>>(count);
 }

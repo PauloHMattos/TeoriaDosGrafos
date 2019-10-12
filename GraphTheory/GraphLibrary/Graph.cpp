@@ -205,6 +205,7 @@ unsigned int Graph::getMedianDegree()
 void Graph::Resize(unsigned int count)
 {
 	m_Degrees = vector<unsigned int>(count);
+	m_NodesCount = count;
 }
 
 void Graph::AddEdge(unsigned int node1, unsigned int node2)

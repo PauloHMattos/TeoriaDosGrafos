@@ -4,7 +4,8 @@
 
 void ListGraph::AddNode(unsigned int index)
 {
-	m_LinkedList[index] = (vector<unsigned int>());
+	m_LinkedList.push_back(vector<unsigned int>());
+	//m_LinkedList[index] = (vector<unsigned int>());
 }
 
 void ListGraph::AddEdge(unsigned int node1, unsigned int node2)
@@ -31,7 +32,6 @@ unsigned int ListGraph::GetNeighbor(unsigned int nodeIndex, unsigned int neighbo
 void ListGraph::Resize(unsigned int count)
 {
 	Graph::Resize(count);
-	m_NodesCount = count;
 	m_LinkedList = vector<vector<unsigned int>>();
 	m_LinkedList.reserve(count);
 }

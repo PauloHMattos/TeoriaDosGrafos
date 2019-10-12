@@ -28,7 +28,6 @@ class DLL_EXPORT_OR_IMPORT Graph
 public:
 	bool Load(string path);
 	virtual void AddNode(unsigned int index) = 0;
-	virtual void Sort();
 
 	unsigned int FindDiameter();
 
@@ -53,6 +52,7 @@ public:
 	unsigned int getMedianDegree();
 
 protected:
+	virtual void Sort();
 	virtual void LoadEdges(istream& file) = 0;
 	virtual void Resize(unsigned int count);
 	void AddEdge(unsigned int node1, unsigned int node2);

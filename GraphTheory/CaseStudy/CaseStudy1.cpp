@@ -6,7 +6,7 @@
 #include "Graph.h"
 #include "ListGraph.h"
 #include "MatrixGraph.h"
-
+#include "CaseStudy.h"
 
 list<list<unsigned int>> connectedComponents(Graph* graph)
 {
@@ -152,7 +152,7 @@ void timingDFS(Graph* graph, int iterations)
 	cout << "\n";
 }
 
-int main()
+int caseStudy1(string path)
 {
 	int dataStructure;
 	cout << "Escolha a estrutura de representação do grafo:\n";
@@ -175,11 +175,6 @@ int main()
 		system("pause");
 		return 0;
 	}
-
-
-	cout << "Digite o nome do arquivo a ser analizado\n";
-	string path;
-	cin >> path;
 
 	if (!graph->Load(path))
 	{
