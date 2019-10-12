@@ -9,7 +9,7 @@ void ListGraph::AddNode(unsigned int index)
 
 void ListGraph::AddEdge(unsigned int node1, unsigned int node2)
 {
-	Graph::AddEdge(node1, node2);
+	UnweightedGraph::AddEdge(node1, node2);
 	m_LinkedList[node1 - 1].push_back(node2);
 	m_LinkedList[node2 - 1].push_back(node1);
 }

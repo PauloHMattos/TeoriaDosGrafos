@@ -176,6 +176,8 @@
     <ClInclude Include="MatrixGraph.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Timing.h" />
+    <ClInclude Include="UnweightedGraph.h" />
+    <ClInclude Include="WeightedGraph.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CaseStudy.cpp" />
@@ -189,6 +191,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="UnweightedGraph.cpp" />
+    <ClCompile Include="WeightedGraph.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

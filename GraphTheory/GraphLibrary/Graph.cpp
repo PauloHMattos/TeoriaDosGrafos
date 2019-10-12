@@ -34,11 +34,10 @@ bool Graph::Load(string path)
 		nodesCount++;
 	}
 	
-	int node1, node2;
-	while (file >> node1 >> node2)
-	{
-		AddEdge(node1, node2);
-	}
+	LoadEdges(file);
+	/*
+	
+	*/
 	STOP_TIMER("File Read");
 
 	START_TIMER;
@@ -48,12 +47,7 @@ bool Graph::Load(string path)
 	return true;
 }
 
-void Graph::AddEdge(unsigned int node1, unsigned int node2)
-{
-	m_EdgesCount++;
-	m_Degrees[node1 - 1] += 1;
-	m_Degrees[node2 - 1] += 1;
-}
+
 
 // Garante que os vizinhos estejam ordenados do menor para o maior
 void Graph::Sort()
@@ -132,57 +126,6 @@ void Graph::DepthFirstSearch(unsigned int startNodeIndex, vector<unsigned int> &
 		}
 	}
 }
-
-list<list<unsigned int>> Graph::GetConnectedComponents()
-{
-	// Guarda os ponteiros
-	auto map = vector<list<unsigned int>*>(getNodesCount());
-	auto components = list<list<unsigned int>>();
-
-	vector<unsigned int> parent(getNodesCount(), UINT_MAX);
-
-	for (unsigned int nodeId = 1; nodeId < getNodesCount() + 1; nodeId++)
-	{
-		if (parent[nodeId - 1] != UINT_MAX)
-		{
-			continue;
-		}
-		DFSUtil(nodeId, parent);
-
-		components.push_front(list<unsigned int>());
-
-		map[nodeId - 1] = &*components.begin();
-		map[nodeId - 1]->push_front(nodeId);
-	}
-
-	for (unsigned int nodeId = 0; nodeId < getNodesCount(); nodeId++)
-	{
-		if (parent[nodeId] == UINT_MAX)
-		{
-			continue;
-		}
-		if (parent[nodeId] == 0)
-		{
-			continue;
-		}
-		map[parent[nodeId] - 1]->push_front(nodeId + 1);
-	}
-
-	return components;
-}
-
-unsigned int Graph::Distance(unsigned int node1, unsigned int node2)
-{
-	if (node1 > m_NodesCount || node2 > m_NodesCount)
-	{
-		return UINT_MAX;
-	}
-
-	vector<int> level(getNodesCount(), -1);
-	BFSUtil(node1, level, node2);
-	return level[node2 - 1];
-}
-
 
 unsigned int Graph::getDegree(unsigned int nodeIndex)
 {
@@ -264,6 +207,13 @@ void Graph::Resize(unsigned int count)
 	m_Degrees = vector<unsigned int>(count);
 }
 
+void Graph::AddEdge(unsigned int node1, unsigned int node2)
+{
+	m_EdgesCount++;
+	m_Degrees[node1 - 1] += 1;
+	m_Degrees[node2 - 1] += 1;
+}
+
 
 void Graph::DFSUtil(unsigned int startNodeIndex, vector<unsigned int>& parent)
 {
@@ -331,6 +281,56 @@ unsigned int Graph::BFSUtil(unsigned int startNodeIndex, vector<int>& level, uns
 	return diameter;
 }
 
+unsigned int Graph::Distance(unsigned int node1, unsigned int node2)
+{
+	if (node1 > m_NodesCount || node2 > m_NodesCount)
+	{
+		return UINT_MAX;
+	}
+
+	vector<int> level(getNodesCount(), -1);
+	BFSUtil(node1, level, node2);
+	return level[node2 - 1];
+}
+
+list<list<unsigned int>> Graph::GetConnectedComponents()
+{
+	// Guarda os ponteiros
+	auto map = vector<list<unsigned int>*>(getNodesCount());
+	auto components = list<list<unsigned int>>();
+
+	vector<unsigned int> parent(getNodesCount(), UINT_MAX);
+
+	for (unsigned int nodeId = 1; nodeId < getNodesCount() + 1; nodeId++)
+	{
+		if (parent[nodeId - 1] != UINT_MAX)
+		{
+			continue;
+		}
+		DFSUtil(nodeId, parent);
+
+		components.push_front(list<unsigned int>());
+
+		map[nodeId - 1] = &*components.begin();
+		map[nodeId - 1]->push_front(nodeId);
+	}
+
+	for (unsigned int nodeId = 0; nodeId < getNodesCount(); nodeId++)
+	{
+		if (parent[nodeId] == UINT_MAX)
+		{
+			continue;
+		}
+		if (parent[nodeId] == 0)
+		{
+			continue;
+		}
+		map[parent[nodeId] - 1]->push_front(nodeId + 1);
+	}
+
+	return components;
+}
+
 unsigned int Graph::FindDiameter()
 {
 	unsigned int diameter = 0;
@@ -344,7 +344,7 @@ unsigned int Graph::FindDiameter()
 
 	INIT_TIMER;
 #pragma omp parallel for shared(diameter)
-	for (unsigned int i = 0; i < getNodesCount(); i++)
+	for (int i = 0; i < getNodesCount(); i++)
 	{
 		auto nodeId = order[i] = 1;
 		vector<int> level(getNodesCount(), -1);

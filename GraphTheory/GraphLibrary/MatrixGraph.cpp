@@ -8,7 +8,7 @@ void MatrixGraph::AddNode(unsigned int index)
 
 void MatrixGraph::AddEdge(unsigned int node1, unsigned int node2)
 {
-	Graph::AddEdge(node1, node2);
+	UnweightedGraph::AddEdge(node1, node2);
 	m_Matrix[node1 - 1][node2 - 1] = true;
 	m_Matrix[node2 - 1][node1 - 1] = true;
 }

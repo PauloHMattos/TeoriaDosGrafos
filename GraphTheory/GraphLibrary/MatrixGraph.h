@@ -1,9 +1,9 @@
 #pragma once
-#include "Graph.h"
+#include "UnweightedGraph.h"
 #include <vector>
 
 class DLL_EXPORT_OR_IMPORT MatrixGraph :
-	public Graph
+	public UnweightedGraph
 {
 public:
 	void AddNode(unsigned int index) override;

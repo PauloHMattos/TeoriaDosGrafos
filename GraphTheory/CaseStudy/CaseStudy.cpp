@@ -30,7 +30,7 @@ void diameter(Graph* graph, list<list<unsigned int>> components)
 	INIT_TIMER;
 	START_TIMER;
 
-	auto diameter = graph->FindDiameter(components);
+	auto diameter = graph->FindDiameter();
 	STOP_TIMER_I("FindDiameter", 1);
 
 	cout << "Diametro do grafo(): " << diameter << "\n";
