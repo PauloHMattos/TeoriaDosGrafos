@@ -173,12 +173,12 @@ double WeightedGraph::Eccentricity(unsigned int startNode)
 {
 	double result = 0.0f;
 	auto distances = Dijkstra(startNode, 0, nullptr);
-
+	auto inf = numeric_limits<double>::infinity();
 #pragma omp parallel for shared(result)
 	for (long i = 1; i < getNodesCount(); i++)
 	{
 		auto dist = distances[i - 1];
-		if (dist > result)
+		if (dist != inf && dist > result)
 		{
 			result = dist;
 		}
