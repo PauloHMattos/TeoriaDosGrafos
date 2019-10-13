@@ -1,12 +1,14 @@
+#ifndef WEIGHTED_GRAPH_H
+#define WEIGHTED_GRAPH_H
+
 #pragma once
 
 #include "Graph.h"
-//#include <tuple>
 
 struct Edge
 {
 	unsigned int Dest;
-	float Weight;
+	double Weight;
 
 	Edge()
 	{
@@ -14,16 +16,12 @@ struct Edge
 		Weight = 0;
 	}
 
-	Edge(unsigned int nodeId, float weight)
+	Edge(unsigned int nodeId, double weight)
 	{
 		Dest = nodeId;
 		Weight = weight;
 	}
 };
-
-bool operator > (const Edge& a, const Edge& b) {
-	return a.Weight > b.Weight;
-}
 
 
 class DLL_EXPORT_OR_IMPORT WeightedGraph :
@@ -31,21 +29,21 @@ class DLL_EXPORT_OR_IMPORT WeightedGraph :
 {
 public:
 	void AddNode(unsigned int index) override;
-	void AddEdge(unsigned int node1, unsigned int node2, float weight);
-	float Distance(unsigned int startNode, unsigned int endNode, list<unsigned int>& path);
-	vector<pair<unsigned int, Edge>> MinimumSpanningTree(float* mstWeight, unsigned int startNode = 1);
-	float Eccentricity(unsigned int startNode);
+	void AddEdge(unsigned int node1, unsigned int node2, double weight);
+	double Distance(unsigned int startNode, unsigned int endNode, list<unsigned int>* path);
+	vector<pair<unsigned int, Edge>> MinimumSpanningTree(double* mstWeight, unsigned int startNode = 1);
+	double Eccentricity(unsigned int startNode);
 
 	unsigned int GetNeighbor(unsigned int nodeIndex, unsigned int neighborId) override;
-	unsigned int GetNeighbor(unsigned int nodeIndex, unsigned int neighborId, float *weight);
+	unsigned int GetNeighbor(unsigned int nodeIndex, unsigned int neighborId, double*weight);
 
 protected:
 	void Sort() override;
 	void Resize(unsigned int count) override;
 	void LoadEdges(istream& file) override;
-	float Dijkstra(unsigned int startNode, unsigned int endNode, list<unsigned int>& path);
-	vector<pair<unsigned int, Edge>> Prim(float* mstWeight, unsigned int startNode);
-	vector<pair<unsigned int, Edge>> Kruskal(float* mstWeight, unsigned int startNode);
+	double Dijkstra(unsigned int startNode, unsigned int endNode, list<unsigned int>* path);
+	vector<pair<unsigned int, Edge>> Prim(double* mstWeight, unsigned int startNode);
+	vector<pair<unsigned int, Edge>> Kruskal(double* mstWeight);
 
 private:
 	vector<vector<Edge>> m_LinkedList;
@@ -61,3 +59,4 @@ private:
 	void Union(Subset subsets[], int x, int y);
 };
 
+#endif

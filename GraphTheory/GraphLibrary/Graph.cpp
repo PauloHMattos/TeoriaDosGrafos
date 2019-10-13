@@ -47,7 +47,28 @@ bool Graph::Load(string path)
 	return true;
 }
 
+bool Graph::LoadLabels(string path)
+{
+	m_Labels.resize(getNodesCount());
 
+	ifstream file;
+	file.open(path);
+
+	if (!file.good())
+	{
+		return false;
+	}
+
+
+	string line = "";
+	while (std::getline(file, line))
+	{
+		unsigned int nodeId = stoi(line.substr(0, line.find(',')));
+		string label = line.substr(line.find(',') + 1);
+		m_Labels[nodeId - 1] = label;
+	}
+	return true;
+}
 
 // Garante que os vizinhos estejam ordenados do menor para o maior
 void Graph::Sort()
@@ -200,7 +221,26 @@ unsigned int Graph::getMedianDegree()
 	}
 }
 
+string Graph::getLabel(unsigned int nodeId)
+{
+	if (nodeId - 1 < m_Labels.size())
+	{
+		return m_Labels[nodeId - 1];
+	}
+	return "undefined";
+}
 
+unsigned int Graph::FindByLabel(string label)
+{
+	for (int i = 0; i < getNodesCount(); i++)
+	{
+		if (m_Labels[i] == label)
+		{
+			return i + 1;
+		}
+	}
+	return 0; // Não definido
+}
 
 void Graph::Resize(unsigned int count)
 {

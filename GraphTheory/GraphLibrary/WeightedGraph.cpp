@@ -2,22 +2,30 @@
 #include "WeightedGraph.h"
 #include <queue>
 #include <limits>
+#include <algorithm>
 
-vector<pair<unsigned int, Edge>> WeightedGraph::MinimumSpanningTree(float* mstWeight, unsigned int startNode)
+bool operator > (const Edge& a, const Edge& b) {
+	return a.Weight > b.Weight;
+}
+
+
+vector<pair<unsigned int, Edge>> WeightedGraph::MinimumSpanningTree(double* mstWeight, unsigned int startNode)
 {
+	if (startNode == 0)
+	{
+		return Kruskal(mstWeight);
+	}
 	return Prim(mstWeight, startNode);
 }
 
-vector<pair<unsigned int, Edge>> WeightedGraph::Prim(float* mstWeight, unsigned int startNode)
+vector<pair<unsigned int, Edge>> WeightedGraph::Prim(double* mstWeight, unsigned int startNode)
 {
 	auto mst = vector<pair<unsigned int, Edge>>(getNodesCount());
 
-	float inf = numeric_limits<float>::infinity();
-	auto cost = vector<float>(getNodesCount(), inf);
-	auto inMST = vector<bool>(getNodesCount(), false);
+	auto cost = vector<double>(getNodesCount(), numeric_limits<double>::infinity());
+	auto inMst = vector<bool>(getNodesCount(), false);
 
 	cost[startNode - 1] = 0;
-	*mstWeight = 0;
 
 	priority_queue<Edge, vector<Edge>, greater<Edge>> priorityQueue;
 	priorityQueue.push(Edge(startNode, 0));
@@ -25,17 +33,16 @@ vector<pair<unsigned int, Edge>> WeightedGraph::Prim(float* mstWeight, unsigned 
 	unsigned int edgeId = 0;
 	while (!priorityQueue.empty())
 	{
-		int nodeId = priorityQueue.top().Dest;
-
-		inMST[nodeId - 1] = true;
+		unsigned int nodeId = priorityQueue.top().Dest;
+		inMst[nodeId - 1] = true;
 		priorityQueue.pop();
 
 		for (unsigned int i = 0; i < m_Degrees[nodeId - 1]; i++)
 		{
-			float weight;
+			double weight;
 			auto neighborId = GetNeighbor(nodeId, i, &weight);
 
-			if (!inMST[neighborId - 1] && cost[neighborId - 1] > weight)
+			if (!inMst[neighborId - 1] && cost[neighborId - 1] > weight)
 			{
 				auto edge = Edge(neighborId, weight);
 				cost[neighborId - 1] = weight;
@@ -53,10 +60,10 @@ vector<pair<unsigned int, Edge>> WeightedGraph::Prim(float* mstWeight, unsigned 
 	return mst;
 }
 
-vector<pair<unsigned int, Edge>> WeightedGraph::Kruskal(float* mstWeight, unsigned int startNode)
+vector<pair<unsigned int, Edge>> WeightedGraph::Kruskal(double* mstWeight)
 {
-	auto mst = vector<pair<unsigned int, Edge>>();
-	mst.reserve(getNodesCount());
+	unsigned int resultId = 0;
+	auto mst = vector<pair<unsigned int, Edge>>(getNodesCount());
 
 	auto tempList = vector<vector<Edge>>(m_LinkedList);
 	//*
@@ -77,25 +84,40 @@ vector<pair<unsigned int, Edge>> WeightedGraph::Kruskal(float* mstWeight, unsign
 		subsets[v].Rank = 0;
 	}
 
-	unsigned int nodeId = 0;
+	unsigned int nodeId = 1;
 	unsigned int edgeId = 0;
-	vector<Edge>* edges = &tempList[nodeId];
-	while (mst.size() < getNodesCount() - 1 && edgeId < this->m_EdgesCount)
+	unsigned int offset = 0;
+	vector<Edge>* edges = &tempList[nodeId - 1];
+	while (resultId < getNodesCount() && edgeId < this->m_EdgesCount)
 	{
-		if (++edgeId >= edges->size())
+		if (nodeId >= getNodesCount() - 1)
 		{
-			nodeId++;
-			edges = &tempList[nodeId];
+			int b = 0;
 		}
 
-		Edge next_edge = (*edges)[edgeId];
+		if (edgeId - offset >= edges->size())
+		{
+			nodeId++;
+			edges = &tempList[nodeId - 1];
+			offset = edgeId;
+		}
 
-		int x = Find(subsets, nodeId);
-		int y = Find(subsets, next_edge.Dest);
+		auto e = (*edges);
+		if (e.size() == 0)
+		{
+			continue;
+		}
+
+		auto a = edgeId - offset;
+		Edge next_edge = e[a];
+		edgeId++;
+
+		int x = Find(subsets, nodeId - 1);
+		int y = Find(subsets, next_edge.Dest - 1);
 
 		if (x != y)
 		{
-			mst[edgeId++] = make_pair(nodeId, next_edge);
+			mst[resultId++] = make_pair(nodeId, next_edge);
 			Union(subsets, x, y);
 			*mstWeight += next_edge.Weight;
 		}
@@ -134,7 +156,7 @@ void WeightedGraph::AddNode(unsigned int index)
 	//m_LinkedList[index] = (vector<Edge>());
 }
 
-void WeightedGraph::AddEdge(unsigned int node1, unsigned int node2, float weight)
+void WeightedGraph::AddEdge(unsigned int node1, unsigned int node2, double weight)
 {
 	Graph::AddEdge(node1, node2);
 
@@ -142,33 +164,33 @@ void WeightedGraph::AddEdge(unsigned int node1, unsigned int node2, float weight
 	m_LinkedList[node2 - 1].push_back(Edge(node1, weight));
 }
 
-float WeightedGraph::Distance(unsigned int startNode, unsigned int endNode, list<unsigned int>& path)
+double WeightedGraph::Distance(unsigned int startNode, unsigned int endNode, list<unsigned int>* path)
 {
 	return Dijkstra(startNode, endNode, path);
 }
 
-float WeightedGraph::Eccentricity(unsigned int startNode)
+double WeightedGraph::Eccentricity(unsigned int startNode)
 {
-	float result = 0.0f;
+	double result = 0.0f;
+	auto path = list<unsigned int>(); // Não usado
 
 #pragma omp parallel for shared(result)
 	for (long i = 1; i < getNodesCount(); i++)
 	{
 		if (i == startNode)	continue;
 
-		auto path = list<unsigned int>(); // Não usado
-		result = max(result, Distance(startNode, i, path));
+		result = max(result, Distance(startNode, i, &path));
 	}
 	return result;
 }
 
 unsigned int WeightedGraph::GetNeighbor(unsigned int nodeIndex, unsigned int neighborId)
 {
-	float weight;
+	double weight;
 	return GetNeighbor(nodeIndex, neighborId, &weight);
 }
 
-unsigned int WeightedGraph::GetNeighbor(unsigned int nodeIndex, unsigned int neighborId, float* weight)
+unsigned int WeightedGraph::GetNeighbor(unsigned int nodeIndex, unsigned int neighborId, double* weight)
 {
 	Edge neighbor = m_LinkedList[nodeIndex - 1][neighborId];
 	*weight = neighbor.Weight;
@@ -196,16 +218,16 @@ void WeightedGraph::Resize(unsigned int count)
 void WeightedGraph::LoadEdges(istream& file)
 {
 	int node1, node2;
-	float weight;
+	double weight;
 	while (file >> node1 >> node2 >> weight)
 	{
 		AddEdge(node1, node2, weight);
 	}
 }
 
-float WeightedGraph::Dijkstra(unsigned int startNode, unsigned int endNode, list<unsigned int>& path)
+double WeightedGraph::Dijkstra(unsigned int startNode, unsigned int endNode, list<unsigned int>* path)
 {
-	auto distances = vector<float>(getNodesCount(), numeric_limits<float>::infinity());
+	auto distances = vector<double>(getNodesCount(), numeric_limits<double>::infinity());
 	distances[startNode  - 1] = 0;
 
 	auto prev = vector<unsigned int>(getNodesCount());
@@ -226,7 +248,7 @@ float WeightedGraph::Dijkstra(unsigned int startNode, unsigned int endNode, list
 		
 		for (unsigned int i = 0; i < m_Degrees[nodeId - 1]; i++)
 		{
-			float weight;
+			double weight;
 			auto neighborId = GetNeighbor(nodeId, i, &weight);
 
 			if (distances[neighborId - 1] > distances[nodeId - 1] + weight)
@@ -238,12 +260,15 @@ float WeightedGraph::Dijkstra(unsigned int startNode, unsigned int endNode, list
 		}
 	}
 
-	path.clear();
-	unsigned int nodeId = endNode;
-	while (nodeId != 0)
+	if (path != nullptr)
 	{
-		path.push_front(nodeId);
-		nodeId = prev[nodeId - 1];
+		path->clear();
+		unsigned int nodeId = endNode;
+		while (nodeId != 0)
+		{
+			path->push_front(nodeId);
+			nodeId = prev[nodeId - 1];
+		}
 	}
 	return distances[endNode - 1];
 }

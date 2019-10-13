@@ -9,8 +9,6 @@
 
 // adicione os cabeçalhos que você deseja pré-compilar aqui
 #include "framework.h"
-#include "ListGraph.h"
-#include "MatrixGraph.h"
 #include <chrono>
 
 #endif //PCH_H

@@ -6,9 +6,9 @@
 #define STOP_TIMER(name)  std::cout << "[" << name << "]: " << \
     std::chrono::duration_cast<std::chrono::nanoseconds>( \
             (std::chrono::high_resolution_clock::now()-start) \
-    ).count() << " ms " << std::endl
+    ).count() << " ns " << std::endl
 
 #define STOP_TIMER_I(name, d)  std::cout << "[" << name << "]: " << \
     std::chrono::duration_cast<std::chrono::nanoseconds>( \
             (std::chrono::high_resolution_clock::now()-start) / d \
-    ).count() << " ms " << std::endl
+    ).count() << " ns " << std::endl

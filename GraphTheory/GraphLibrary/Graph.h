@@ -27,6 +27,7 @@ class DLL_EXPORT_OR_IMPORT Graph
 {
 public:
 	bool Load(string path);
+	bool LoadLabels(string path);
 	virtual void AddNode(unsigned int index) = 0;
 
 	unsigned int FindDiameter();
@@ -51,6 +52,9 @@ public:
 	float getMeanDegree();
 	unsigned int getMedianDegree();
 
+	string getLabel(unsigned int nodeId);
+	unsigned int FindByLabel(string label);
+
 protected:
 	virtual void Sort();
 	virtual void LoadEdges(istream& file) = 0;
@@ -61,6 +65,7 @@ protected:
 	unsigned int BFSUtil(unsigned int startNodeIndex, vector<int>& level, unsigned int goalIndex);
 
 	vector<unsigned int> m_Degrees;
+	vector<string> m_Labels;
 
 	unsigned int m_NodesCount = 0;
 	unsigned int m_EdgesCount = 0;

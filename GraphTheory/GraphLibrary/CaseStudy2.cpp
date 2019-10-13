@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <chrono>
 #include "Graph.h"
@@ -6,6 +5,10 @@
 #include <fstream>
 #include <map>
 #include "CaseStudy.h"
+#include <iomanip>      // std::setprecision
+
+int caseStudy2(string path, string labelsPath);
+
 
 int main()
 {
@@ -50,10 +53,6 @@ int main()
 		}
 	}
 
-	if (i < 2)
-	{
-		return caseStudy1(path, labelsPath);
-	}
 
 	return caseStudy2(path, labelsPath);
 }
@@ -62,6 +61,7 @@ void distColab(WeightedGraph& graph);
 void eccentricity(WeightedGraph& graph);
 void timingEccentricity(WeightedGraph& graph, int iterations);
 void mstPrim(WeightedGraph& graph);
+void mstKruskal(WeightedGraph& graph);
 void mstCollab(WeightedGraph& graph);
 
 int caseStudy2(string path, string labelsPath)
@@ -73,9 +73,15 @@ int caseStudy2(string path, string labelsPath)
 	//distColab(graph);
 	//mstCollab(graph);
 	mstPrim(graph);
+	mstKruskal(graph);
 	eccentricity(graph);
 	timingEccentricity(graph, 100);
 
+	/*
+	double weight = 0;
+	auto tree = graph.MinimumSpanningTree(&weight);
+	//*/
+	system("PAUSE");
 	return 0;
 }
 
@@ -130,6 +136,22 @@ void mstPrim(WeightedGraph& graph)
 	auto tree = graph.MinimumSpanningTree(&weight, 1);
 
 	STOP_TIMER("MST Prim");
+	cout << "Peso: " << weight;
+
+	cout << "\n";
+
+	// TODO - Salvar num arquivo de texto
+}
+
+void mstKruskal(WeightedGraph& graph)
+{
+	INIT_TIMER;
+	START_TIMER;
+
+	double weight = 0;
+	auto tree = graph.MinimumSpanningTree(&weight, 0);
+
+	STOP_TIMER("MST Kruskal");
 	cout << "Peso: " << weight;
 
 	cout << "\n";

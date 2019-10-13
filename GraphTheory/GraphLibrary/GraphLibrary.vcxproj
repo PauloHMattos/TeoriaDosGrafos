@@ -114,6 +114,7 @@
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -180,7 +181,6 @@
     <ClInclude Include="WeightedGraph.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CaseStudy.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="ListGraph.cpp" />

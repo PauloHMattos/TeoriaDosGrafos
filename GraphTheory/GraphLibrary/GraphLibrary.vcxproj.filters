@@ -56,9 +56,6 @@
     <ClCompile Include="MatrixGraph.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="CaseStudy.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
     <ClCompile Include="WeightedGraph.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
