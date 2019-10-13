@@ -172,14 +172,12 @@ double WeightedGraph::Distance(unsigned int startNode, unsigned int endNode, lis
 double WeightedGraph::Eccentricity(unsigned int startNode)
 {
 	double result = 0.0f;
-	auto path = list<unsigned int>(); // Não usado
-
 #pragma omp parallel for shared(result)
 	for (long i = 1; i < getNodesCount(); i++)
 	{
 		if (i == startNode)	continue;
 
-		result = max(result, Distance(startNode, i, &path));
+		result = max(result, Distance(startNode, i, nullptr));
 	}
 	return result;
 }

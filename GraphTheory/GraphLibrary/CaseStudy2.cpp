@@ -92,7 +92,7 @@ void eccentricity(WeightedGraph& graph)
 	for (int i = 0; i < sizeof(destinations) / sizeof(unsigned int); i++)
 	{
 		list<unsigned int> path;
-		auto dist = graph.Distance(startNode, destinations[i], path);
+		auto dist = graph.Distance(startNode, destinations[i], &path);
 
 		cout << "Distancia: " << dist << " - ";
 		for (unsigned int node : path)
@@ -172,7 +172,7 @@ void distColab(WeightedGraph& graph)
 		auto other = graph.FindByLabel(labels[i]);
 
 		list<unsigned int> path;
-		auto dist = graph.Distance(dijkstra, other, path);
+		auto dist = graph.Distance(dijkstra, other, &path);
 
 		cout << labels[i] << "\n";
 		cout << "Distancia: " << dist << " - ";
