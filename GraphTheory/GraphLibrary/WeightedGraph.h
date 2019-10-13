@@ -41,7 +41,7 @@ protected:
 	void Sort() override;
 	void Resize(unsigned int count) override;
 	void LoadEdges(istream& file) override;
-	double Dijkstra(unsigned int startNode, unsigned int endNode, list<unsigned int>* path);
+	vector<double> Dijkstra(unsigned int startNode, unsigned int endNode, list<unsigned int>* path);
 	vector<pair<unsigned int, Edge>> Prim(double* mstWeight, unsigned int startNode);
 	vector<pair<unsigned int, Edge>> Kruskal(double* mstWeight);
 

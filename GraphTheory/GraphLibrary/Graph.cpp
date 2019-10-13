@@ -38,12 +38,10 @@ bool Graph::Load(string path)
 	/*
 	
 	*/
-	STOP_TIMER("File Read");
+	STOP_TIMER();
+	PRINT_TIMER("File Read", 1);
 
-	START_TIMER;
 	Sort();
-	STOP_TIMER("Sort");
-
 	return true;
 }
 
@@ -383,7 +381,7 @@ unsigned int Graph::FindDiameter()
 	auto rng = default_random_engine{};
 	shuffle(order.begin(), order.end(), rng);
 
-	INIT_TIMER;
+	//INIT_TIMER;
 #pragma omp parallel for shared(diameter)
 	for (int i = 0; i < getNodesCount(); i++)
 	{
@@ -394,7 +392,7 @@ unsigned int Graph::FindDiameter()
 		{
 			diameter = d;
 			cout << diameter;
-			STOP_TIMER_I("Diameter", 1);
+			//STOP_TIMER("Diameter", 1);
 			cout << "\n";
 		}
 	}

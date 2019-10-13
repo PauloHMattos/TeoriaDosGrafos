@@ -166,18 +166,22 @@ void WeightedGraph::AddEdge(unsigned int node1, unsigned int node2, double weigh
 
 double WeightedGraph::Distance(unsigned int startNode, unsigned int endNode, list<unsigned int>* path)
 {
-	return Dijkstra(startNode, endNode, path);
+	return Dijkstra(startNode, endNode, path)[endNode - 1];
 }
 
 double WeightedGraph::Eccentricity(unsigned int startNode)
 {
 	double result = 0.0f;
+	auto distances = Dijkstra(startNode, 0, nullptr);
+
 #pragma omp parallel for shared(result)
 	for (long i = 1; i < getNodesCount(); i++)
 	{
-		if (i == startNode)	continue;
-
-		result = max(result, Distance(startNode, i, nullptr));
+		auto dist = distances[i - 1];
+		if (dist > result)
+		{
+			result = dist;
+		}
 	}
 	return result;
 }
@@ -223,7 +227,7 @@ void WeightedGraph::LoadEdges(istream& file)
 	}
 }
 
-double WeightedGraph::Dijkstra(unsigned int startNode, unsigned int endNode, list<unsigned int>* path)
+vector<double> WeightedGraph::Dijkstra(unsigned int startNode, unsigned int endNode, list<unsigned int>* path)
 {
 	auto distances = vector<double>(getNodesCount(), numeric_limits<double>::infinity());
 	distances[startNode  - 1] = 0;
@@ -268,6 +272,6 @@ double WeightedGraph::Dijkstra(unsigned int startNode, unsigned int endNode, lis
 			nodeId = prev[nodeId - 1];
 		}
 	}
-	return distances[endNode - 1];
+	return distances;
 }
 

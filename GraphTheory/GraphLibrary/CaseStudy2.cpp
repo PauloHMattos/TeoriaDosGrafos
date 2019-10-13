@@ -12,19 +12,20 @@ int caseStudy2(string path, string labelsPath);
 
 int main()
 {
-	/*
+	cout.precision(17);
+	//*
 	cout << "Digite o nome do arquivo a ser analizado\n";
 	string path;
 	cin >> path;
 
 	cout << "Digite o nome do arquivo de rotulos\n";
-	string labelspath;
-	cin >> labelspath;
+	string labelsPath;
+	cin >> labelsPath;
 	//*/
-
+	/*
 	string path = "C:/Users/Paulo/Documents/GitHub/TeoriaDosGrafos/GraphTheory/x64/Debug/grafo_1.txt";
 	string labelsPath = "C:/Users/Paulo/Documents/GitHub/TeoriaDosGrafos/GraphTheory/x64/Debug/rede_colaboracao_vertices.txt";
-
+	//*/
 	ifstream file(path);
 
 	if (!file)
@@ -68,14 +69,22 @@ int caseStudy2(string path, string labelsPath)
 {
 	WeightedGraph graph;
 	graph.Load(path);
-	//graph.LoadLabels(labelsPath);
+	if (labelsPath != "N" || labelsPath != "n")
+	{
+		graph.LoadLabels(labelsPath);
+	}
+
+	mstPrim(graph);
+	system("PAUSE");
+	//mstKruskal(graph);
+	//system("PAUSE");
+	eccentricity(graph);
+	system("PAUSE");
+	timingEccentricity(graph, 100);
+	system("PAUSE");
 
 	//distColab(graph);
 	//mstCollab(graph);
-	mstPrim(graph);
-	mstKruskal(graph);
-	eccentricity(graph);
-	timingEccentricity(graph, 100);
 
 	/*
 	double weight = 0;
@@ -119,11 +128,13 @@ void timingEccentricity(WeightedGraph& graph, int iterations)
 	{
 		unsigned int startNode = RandU(1, graph.getNodesCount());
 		graph.Eccentricity(startNode);
+		/*
 		cout << i << "             ";
 		printf("\r");
+		*/
 	}
-
-	STOP_TIMER_I("Timing Eccentricity", iterations);
+	STOP_TIMER();
+	PRINT_TIMER("Timing Eccentricity", iterations);
 	cout << "\n";
 }
 
@@ -131,11 +142,11 @@ void mstPrim(WeightedGraph& graph)
 {
 	INIT_TIMER;
 	START_TIMER;
-
 	double weight = 0;
 	auto tree = graph.MinimumSpanningTree(&weight, 1);
 
-	STOP_TIMER("MST Prim");
+	STOP_TIMER();
+	PRINT_TIMER("MST Prim", 1);
 	cout << "Peso: " << weight;
 
 	cout << "\n";
@@ -151,7 +162,8 @@ void mstKruskal(WeightedGraph& graph)
 	double weight = 0;
 	auto tree = graph.MinimumSpanningTree(&weight, 0);
 
-	STOP_TIMER("MST Kruskal");
+	STOP_TIMER();
+	PRINT_TIMER("MST Kruskal", 1);
 	cout << "Peso: " << weight;
 
 	cout << "\n";

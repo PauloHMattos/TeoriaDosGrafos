@@ -3,12 +3,6 @@
 #define INIT_TIMER auto start = std::chrono::high_resolution_clock::now()
 #define START_TIMER  start = std::chrono::high_resolution_clock::now()
 
-#define STOP_TIMER(name)  std::cout << "[" << name << "]: " << \
-    std::chrono::duration_cast<std::chrono::nanoseconds>( \
-            (std::chrono::high_resolution_clock::now()-start) \
-    ).count() << " ns " << std::endl
+#define STOP_TIMER() auto end = chrono::high_resolution_clock::now(); 
 
-#define STOP_TIMER_I(name, d)  std::cout << "[" << name << "]: " << \
-    std::chrono::duration_cast<std::chrono::nanoseconds>( \
-            (std::chrono::high_resolution_clock::now()-start) / d \
-    ).count() << " ns " << std::endl
+#define PRINT_TIMER(name, d) std::cout << "[" << name << "]: " << (chrono::duration_cast<chrono::microseconds>(end - start).count() / d) << " us " << std::endl
