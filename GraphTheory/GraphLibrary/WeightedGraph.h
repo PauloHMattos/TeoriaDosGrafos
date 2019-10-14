@@ -37,6 +37,10 @@ public:
 	unsigned int GetNeighbor(unsigned int nodeIndex, unsigned int neighborId) override;
 	unsigned int GetNeighbor(unsigned int nodeIndex, unsigned int neighborId, double*weight);
 
+	void WriteToFile(string path);
+	static void WriteToFile(WeightedGraph *graph, string path);
+	static void WriteToFile(vector<pair<unsigned int, Edge>> graph, string path);
+
 protected:
 	void Sort() override;
 	void Resize(unsigned int count) override;

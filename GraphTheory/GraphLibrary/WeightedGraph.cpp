@@ -3,6 +3,8 @@
 #include <queue>
 #include <limits>
 #include <algorithm>
+#include <iostream>
+#include <fstream>
 
 bool operator > (const Edge& a, const Edge& b) {
 	return a.Weight > b.Weight;
@@ -22,7 +24,8 @@ vector<pair<unsigned int, Edge>> WeightedGraph::Prim(double* mstWeight, unsigned
 {
 	auto mst = vector<pair<unsigned int, Edge>>(getNodesCount());
 
-	auto cost = vector<double>(getNodesCount(), numeric_limits<double>::infinity());
+	auto inf = numeric_limits<double>::infinity();
+	auto cost = vector<double>(getNodesCount(), inf);
 	auto inMst = vector<bool>(getNodesCount(), false);
 
 	cost[startNode - 1] = 0;
@@ -46,8 +49,8 @@ vector<pair<unsigned int, Edge>> WeightedGraph::Prim(double* mstWeight, unsigned
 			{
 				auto edge = Edge(neighborId, weight);
 				cost[neighborId - 1] = weight;
-				priorityQueue.push(edge);
 				mst[neighborId - 1] = make_pair(nodeId, edge);
+				priorityQueue.push(edge);
 			}
 		}
 	}
@@ -55,7 +58,10 @@ vector<pair<unsigned int, Edge>> WeightedGraph::Prim(double* mstWeight, unsigned
 	*mstWeight = 0;
 	for (int i = 0; i < getNodesCount(); i++)
 	{
-		*mstWeight += mst[i].second.Weight;
+		if (cost[i] != inf)
+		{
+			*mstWeight += cost[i];
+		}
 	}
 	return mst;
 }
@@ -197,6 +203,34 @@ unsigned int WeightedGraph::GetNeighbor(unsigned int nodeIndex, unsigned int nei
 	Edge neighbor = m_LinkedList[nodeIndex - 1][neighborId];
 	*weight = neighbor.Weight;
 	return neighbor.Dest;
+}
+
+void WeightedGraph::WriteToFile(string path)
+{
+	WeightedGraph::WriteToFile(this, path);
+}
+
+void WeightedGraph::WriteToFile(WeightedGraph* graph, string path)
+{
+	std::ofstream stream(path);
+	stream << graph->getNodesCount() << "\n";
+	for (unsigned int i = 0; i < graph->getNodesCount(); i++)
+	{
+		for (auto e : graph->m_LinkedList[i])
+		{
+			stream << i << " " << e.Dest << " " << e.Weight << "\n";
+		}
+	}
+}
+
+void WeightedGraph::WriteToFile(vector<pair<unsigned int, Edge>> graph, string path)
+{
+	std::ofstream stream(path);
+	stream << graph.size() << "\n";
+	for (unsigned int i = 0; i < graph.size(); i++)
+	{
+		stream << graph[i].first << " " << graph[i].second.Dest << " " << graph[i].second.Weight << "\n";
+	}
 }
 
 void WeightedGraph::Sort()

@@ -12,20 +12,21 @@ int caseStudy2(string path, string labelsPath);
 
 int main()
 {
-	cout.precision(17);
-	//*
-	cout << "Digite o nome do arquivo a ser analizado\n";
+	cout.precision(15);
+	string labelsPath;
 	string path;
+	/*
+	cout << "Digite o nome do arquivo a ser analizado\n";
 	cin >> path;
 
 	cout << "Digite o nome do arquivo de rotulos\n";
-	string labelsPath;
 	cin >> labelsPath;
 	//*/
 	/*
 	string path = "C:/Users/Paulo/Documents/GitHub/TeoriaDosGrafos/GraphTheory/x64/Debug/grafo_1.txt";
 	string labelsPath = "C:/Users/Paulo/Documents/GitHub/TeoriaDosGrafos/GraphTheory/x64/Debug/rede_colaboracao_vertices.txt";
 	//*/
+	/*
 	ifstream file(path);
 
 	if (!file)
@@ -53,8 +54,7 @@ int main()
 			i++;
 		}
 	}
-
-
+	*/
 	return caseStudy2(path, labelsPath);
 }
 
@@ -68,23 +68,24 @@ void mstCollab(WeightedGraph& graph);
 int caseStudy2(string path, string labelsPath)
 {
 	WeightedGraph graph;
-	graph.Load(path);
-	if (labelsPath != "N" || labelsPath != "n")
-	{
-		graph.LoadLabels(labelsPath);
-	}
+	graph.Load("rede_colaboracao.txt");
 
-	mstPrim(graph);
-	system("PAUSE");
-	//mstKruskal(graph);
+	//if (labelsPath != "N" || labelsPath != "n")
+	{
+		graph.LoadLabels("rede_colaboracao_vertices.txt");
+	}
+	/*
+	//mstPrim(graph);
 	//system("PAUSE");
+	mstKruskal(graph);
+	system("PAUSE");
 	eccentricity(graph);
 	system("PAUSE");
 	timingEccentricity(graph, 100);
 	system("PAUSE");
-
+	//*/
+	mstCollab(graph);
 	//distColab(graph);
-	//mstCollab(graph);
 
 	/*
 	double weight = 0;
@@ -206,6 +207,7 @@ void mstCollab(WeightedGraph& graph)
 	auto tree = graph.MinimumSpanningTree(&weight, 2722);
 
 	auto table = map<unsigned int, list<Edge>>();
+	pair<unsigned int, unsigned int> maxList[3];
 
 	unsigned int maxDegreeOwner = 0;
 	unsigned int maxDegree = 0;
@@ -218,17 +220,36 @@ void mstCollab(WeightedGraph& graph)
 
 		if (p.first - 1 >= table.size())
 		{
-			table.insert(make_pair(p.first - 1, list < Edge>()));
+			table.insert(make_pair(p.first - 1, list<Edge>()));
 		}
+		
 		table[p.first - 1].push_front(p.second);
 
-		if (table[p.first - 1].size() > maxDegree)
+		for (int i = 0; i < 3; i++)
 		{
-			maxDegreeOwner = p.first;
-			maxDegree = table[p.first - 1].size();
+			if (table[p.first - 1].size() > maxList[i].second)
+			{
+				if (p.first != maxList[i].first)
+				{
+					for (int j = i + 1; j < 3; j++)
+					{
+						maxList[j] = maxList[i];
+					}
+				}
+				maxList[i] = make_pair(p.first, table[p.first - 1].size());
+			}
 		}
 	}
 	
+	cout << "Maiores graus: \n";
+	for (int i = 0; i < 3; i++)
+	{
+		auto nodeId = maxList[i].first;
+		auto degree = maxList[i].second;
+		auto label = graph.getLabel(nodeId);
+
+		cout << label << ": " << degree << "\n";
+	}
 	auto a = table[dijkstra - 1];
 	auto b = table[figueiredo - 1];
 
